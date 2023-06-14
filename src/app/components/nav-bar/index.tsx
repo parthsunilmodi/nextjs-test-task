@@ -5,10 +5,13 @@ import {
   faShoppingCart,
   faRightFromBracket,
   faBagShopping,
-  faBars
+  faBars,
+  faUser
 } from '@fortawesome/free-solid-svg-icons';
+import { useAppSelector } from "../../../redux/hooks";
 
 const NavBar = () => {
+  const { user } = useAppSelector((state) => state.user);
   return (
     <>
       <header className="lg:px-16 px-8 flex flex-wrap items-center py-4 bg-[#dfe3ee] w-[100%] z-10 fixed">
@@ -54,6 +57,19 @@ const NavBar = () => {
                   />
                   <span className="inline md:flex justify-center items-center text-xl font-semibold text-[#3b5998]">
               Cart
+            </span>
+                </Link>
+              </li>
+              <li>
+                <Link className="md:p-4 py-3 px-0 flex items-center" href="/cart">
+                  <FontAwesomeIcon
+                    className="mr-2 w-[20px] h-[30px]"
+                    icon={faUser}
+                    color="#3b5998"
+                    size="lg"
+                  />
+                  <span className="absolute bg-[#000000] ml-3 mb-7 rounded-full p-1 w-7 inline md:flex justify-center items-center text-sm font-semibold text-[#FFFFFF]">
+                    {user.points || '0'}
             </span>
                 </Link>
               </li>

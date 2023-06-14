@@ -20,9 +20,9 @@ const WithAuth = ({children} : any) => {
 
 	if (!tokens) {
 		return null;
-	}
-	
-	return children
+	} else {
+	  return children
+  }
 };
 
 export default WithAuth

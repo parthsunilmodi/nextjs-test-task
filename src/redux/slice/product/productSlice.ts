@@ -1,5 +1,13 @@
 import { createSlice } from '@reduxjs/toolkit';
-import {addProductToCart, decreaseProduct, fetchProduct, increaseProduct} from './productApi';
+import {
+  addProductToCart,
+  decreaseProduct,
+  fetchProduct,
+  getOrder,
+  increaseProduct,
+  orderCheckout,
+  removeProductFromCart
+} from './productApi';
 
 interface IProduct {
   _id: string;
@@ -25,7 +33,9 @@ type ProductState = {
   loading: boolean,
   error: string | undefined,
   hasMore: boolean,
-  cart: ICart[]
+  cart: ICart[],
+  orderSuccess: boolean,
+  order: any
 };
 
 const initialState: ProductState = {
@@ -33,7 +43,9 @@ const initialState: ProductState = {
   cart: [],
   loading: false,
   error: '',
-  hasMore: true
+  hasMore: true,
+  orderSuccess: false,
+  order: []
 };
 
 export const productSlice = createSlice({
@@ -57,8 +69,8 @@ export const productSlice = createSlice({
       state.loading = true;
     });
     builder.addCase(addProductToCart.fulfilled, (state:any, action) => {
-      state.loading = false;
       state.cart = [action.payload, ...state.cart];
+      state.loading = false;
     });
     builder.addCase(addProductToCart.rejected, (state, action) => {
       state.loading = false;
@@ -83,6 +95,39 @@ export const productSlice = createSlice({
       state.cart = action.payload;
     });
     builder.addCase(increaseProduct.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.error.message
+    });
+    builder.addCase(orderCheckout.pending, (state, action) => {
+      state.loading = true;
+    });
+    builder.addCase(orderCheckout.fulfilled, (state:any, action) => {
+      state.orderSuccess = true;
+      state.loading = false;
+    });
+    builder.addCase(orderCheckout.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.error.message
+    });
+    builder.addCase(getOrder.pending, (state, action) => {
+      state.loading = true;
+    });
+    builder.addCase(getOrder.fulfilled, (state:any, action) => {
+      state.order = action.payload;
+      state.loading = false;
+    });
+    builder.addCase(getOrder.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.error.message
+    });
+    builder.addCase(removeProductFromCart.pending, (state, action) => {
+      state.loading = true;
+    });
+    builder.addCase(removeProductFromCart.fulfilled, (state:any, action) => {
+      state.cart = state.cart.filter((item) => item._id !== action.payload._id);
+      state.loading = false;
+    });
+    builder.addCase(removeProductFromCart.rejected, (state, action) => {
       state.loading = false;
       state.error = action.error.message
     });

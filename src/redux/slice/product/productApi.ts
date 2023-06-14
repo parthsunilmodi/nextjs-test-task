@@ -28,13 +28,12 @@ export const fetchProduct = createAsyncThunk(
         throw new Error(e.message)
       }
     }
-   
   },
 );
 
 export const addProductToCart = createAsyncThunk(
   '/addProductToCart',
-  async (data:ICartProduct[]) => {
+  async (data:any) => {
     try {
         return data
     } catch (e) {
@@ -48,7 +47,7 @@ export const addProductToCart = createAsyncThunk(
 
 export const decreaseProduct = createAsyncThunk(
   '/decreaseProduct',
-  async (data:ICartProduct[]) => {
+  async (data:any) => {
     try {
       return data
     } catch (e) {
@@ -62,7 +61,7 @@ export const decreaseProduct = createAsyncThunk(
 
 export const increaseProduct = createAsyncThunk(
   '/increaseProduct',
-  async (data:ICartProduct[]) => {
+  async (data:any) => {
     try {
       return data
     } catch (e) {
@@ -74,5 +73,46 @@ export const increaseProduct = createAsyncThunk(
   },
 );
 
+export const orderCheckout = createAsyncThunk(
+  '/orderCheckout',
+  async (data:any) => {
+    try {
+      const response = await axiosInstance.post(`/orders`, data);
+      return response
+    } catch (e) {
+      if (request.isAxiosError(e) && e.response) {
+        throw new Error(e.message)
+      }
+    }
+  },
+);
 
+
+export const getOrder = createAsyncThunk(
+  '/getOrder',
+  async (data:any) => {
+    try {
+      const response = await axiosInstance.get(`/orders`);
+      return response.data
+    } catch (e) {
+      if (request.isAxiosError(e) && e.response) {
+        throw new Error(e.message)
+      }
+    }
+  },
+);
+
+
+export const removeProductFromCart = createAsyncThunk(
+  '/removeProductFromCart',
+  async (item:any) => {
+    try {
+      return item
+    } catch (e) {
+      if (request.isAxiosError(e) && e.response) {
+        throw new Error(e.message)
+      }
+    }
+  },
+);
 

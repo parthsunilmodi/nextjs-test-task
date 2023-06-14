@@ -1,12 +1,17 @@
 'use client';
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { faArrowLeft, faMinusCircle, faPlus, faMinus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import WithAuth from "../../components/Auth";
-import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import { decreaseProduct, increaseProduct } from "../../redux/slice/product/productApi";
+import {useAppDispatch, useAppSelector} from "../../redux/hooks";
+import {
+  decreaseProduct,
+  increaseProduct,
+  orderCheckout,
+  removeProductFromCart
+} from "../../redux/slice/product/productApi";
+import { useRouter } from "next/navigation";
 
 interface ICart {
   _id: string;
@@ -19,13 +24,15 @@ interface ICart {
 }
 
 const Cart = () => {
-  const {cart} = useAppSelector((state) => state.product);
-  const [ openCheckoutModal, setCheckoutModal ] = useState<boolean>(false);
+  const { cart } = useAppSelector((state) => state.product);
+  const { user } = useAppSelector((state) => state.user);
+  const navigate = useRouter();
   const dispatch = useAppDispatch();
 
-  const handleIncrement = (item: ICart) => {
-    const data = cart.map((product: {_id: string; amount: number;}) => {
-      if (item._id === product._id) {
+  
+  const handleIncrement = (item:ICart) => {
+    const data = cart.map((product) => {
+      if(item._id === product._id) {
         return {
           ...product,
           amount: product.amount + 1
@@ -36,10 +43,10 @@ const Cart = () => {
     });
     dispatch(increaseProduct(data))
   };
-
-  const handleDecrease = (item: ICart) => {
-    const data = cart.map((product: { _id: string; amount: number; }) => {
-      if (item._id === product._id) {
+  
+  const handleDecrease = (item:ICart) => {
+    const data = cart.map((product) => {
+      if(item._id === product._id) {
         return {
           ...product,
           amount: product.amount - 1
@@ -50,15 +57,27 @@ const Cart = () => {
     });
     dispatch(decreaseProduct(data))
   };
-
+  
+  const handleCheckout = async () => {
+    const cartItems = cart.map((item) => {
+      return {bookId: item._id, quantity: item.amount}
+    });
+    const response = await dispatch(orderCheckout({books: cartItems }));
+    if(response.payload.status === 201 || 200) {
+      navigate.push('/order')
+    }
+  };
+  
+  const calculateTotal = (items) =>
+    items.reduce((acc, item) => acc + item.amount * item.points, 0);
+  
+  const handleRemoveItem = (item: ICart ) => {
+    dispatch(removeProductFromCart(item))
+  };
+  
   return (
-    <WithAuth>
       <div
-        className={
-          openCheckoutModal
-            ? "bg-white p-4 sm:p-10 w-full fixed overflow-hidden"
-            : "bg-white p-4 sm:p-10"
-        }
+        className={"bg-white p-4 sm:p-10"}
         style={{minHeight: "150px"}}
       >
         <Link href="/" className="flex content-center mb-8 text-indigo-800">
@@ -72,7 +91,7 @@ const Cart = () => {
         ) : (
           <div>
             <h2 className="mb-16 text-4xl font-bold w-full text-right">
-              Total: $ 10
+              Total: {calculateTotal(cart).toFixed(2)}
             </h2>
             {cart?.map((item: ICart, id: string | number | null | undefined) => (
               <div
@@ -85,32 +104,37 @@ const Cart = () => {
                   <div className="text-lg font-bold">
                     <span className="text-2xl">$ {item.points}</span> x{" "}
                     <span className="text-2xl">{item.amount}</span>
+                    <span className="text-2xl">{(item.amount * item.points).toFixed(2)}</span>
+
                   </div>
                 </div>
                 <div className="flex items-center justify-evenly p-2 w-[50%] gap-3 border-1 rounded-lg h-14">
-                  <FontAwesomeIcon icon={faMinus} className="bg-[#3b5998] p-3 rounded text-white"
-                                   onClick={() => handleDecrease(item)}/>
+                  <button onClick={() => handleDecrease(item)} disabled={item.amount < 2}>
+                  <FontAwesomeIcon icon={faMinus} className="bg-[#3b5998] p-3 rounded text-white"/>
+                  </button>
                   {item.amount}
-                  <FontAwesomeIcon icon={faPlus} className="bg-[#3b5998] p-3 rounded text-white"
-                                   onClick={() => handleIncrement(item)}/>
+                <button onClick={() => handleIncrement(item)} disabled={calculateTotal(cart) >= user.points}>
+                  <FontAwesomeIcon icon={faPlus} className="bg-[#8b9dc3] p-3 rounded"/>
+                </button>
+                <button onClick={() => handleRemoveItem(item)}>
                   <FontAwesomeIcon
                     icon={faMinusCircle}
                     color="#c53030"
                     size="2x"
                   />
+                </button>
                 </div>
               </div>
             ))}
             <button
               className="mt-8 w-full font-bold bg-[#3b5998] rounded-lg p-4 text-white text-lg"
-              onClick={() => setCheckoutModal(true)}
+              onClick={handleCheckout}
             >
               CHECKOUT
             </button>
           </div>
         )}
       </div>
-    </WithAuth>
   );
 };
 

@@ -1,11 +1,21 @@
-import React from 'react';
+"use client";
+import React, {useEffect} from 'react';
 import Link from 'next/link';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
+import {useAppDispatch, useAppSelector} from "../../redux/hooks";
+import {getOrder} from "../../redux/slice/product/productApi";
 
 const Order = () => {
   const orderState = [];
-
+  const dispatch = useAppDispatch();
+  const { order } = useAppSelector((state) => state.product)
+  useEffect(() => {
+    dispatch(getOrder())
+  }, []);
+  
+  console.log(order)
+  
   return (
     <div className="bg-white p-4 sm:p-10" style={{minHeight: "150px"}}>
       <Link href="/" className="flex content-center mb-8 text-indigo-800">
@@ -13,19 +23,17 @@ const Order = () => {
         <span className="font-bold text-2xl">Back</span>
       </Link>
       <h1 className="text-indigo-800 text-5xl font-bold mb-8">My Order</h1>
-      {orderState.length === 0 ? (
+      {order.length === 0 ? (
         <h3 className="text-gray-500 text-lg font-bold">There is no order</h3>
       ) : (
         <div>
-          {orderState
-            .reverse()
-            .map(({items, total, email, createAt}, index) => (
+          { order.length > 0 && order?.map(({books, total, email, createAt}, index) => (
               <div
                 className="w-full flex flex-col p-8 mb-4 rounded shadow-lg"
                 key={index}
               >
                 <div className="text-indigo-800 font-bold text-lg">
-                  {createAt.toString()}
+                  {/*{createAt.toString()}*/}
                 </div>
                 <div className="w-full mb-8">
                   <div className="text-gray-600 font-bold text-right text-3xl">
@@ -34,7 +42,7 @@ const Order = () => {
                   <div className="text-gray-600 text-right">{email}</div>
                 </div>
                 <div className="w-full">
-                  {items.map(({id, title, price, qty}) => (
+                  {books.map(({id, title, price, qty}) => (
                     <div
                       className="flex justify-between items-center mb-1"
                       key={id}
