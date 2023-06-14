@@ -14,10 +14,10 @@ const NavBar = () => {
   const { user } = useAppSelector((state) => state.user);
   return (
     <>
-      <header className="lg:px-16 px-8 flex flex-wrap items-center py-4 bg-[#dfe3ee] w-[100%] z-10 fixed">
+      <header className="lg:px-16 px-8 flex flex-wrap items-center py-2 bg-[#3b5998] w-[100%] z-10 fixed">
         <div className="flex-1 flex justify-between items-center">
           <h1 className="leading-none text-2xl text-grey-darkest">
-            <Link className="no-underline text-[#3b5998] text-4xl font-bold" href="/">
+            <Link className="no-underline text-white text-4xl font-bold" href="/">
               Book Store
             </Link>
           </h1>
@@ -26,7 +26,7 @@ const NavBar = () => {
         <label htmlFor="menu-toggle" className="pointer-cursor md:hidden block">
           <FontAwesomeIcon
             icon={faBars}
-            className="h-[30px] w-[30px] text-[#3b5998]"
+            className="h-[30px] w-[30px] text-white"
           />
         </label>
         <input className="hidden" type="checkbox" id="menu-toggle"/>
@@ -39,10 +39,10 @@ const NavBar = () => {
                   <FontAwesomeIcon
                     className="mr-2 w-[20px] h-[20px]"
                     icon={faBagShopping}
-                    color="#3b5998"
+                    color="white"
                     size="lg"
                   />
-                  <span className="inline md:flex justify-center items-center text-xl font-semibold text-[#3b5998]">
+                  <span className="inline md:flex justify-center items-center text-xl font-semibold text-white">
               My Order
             </span>
                 </Link>
@@ -52,10 +52,10 @@ const NavBar = () => {
                   <FontAwesomeIcon
                     className="mr-2 w-[20px] h-[30px]"
                     icon={faShoppingCart}
-                    color="#3b5998"
+                    color="white"
                     size="lg"
                   />
-                  <span className="inline md:flex justify-center items-center text-xl font-semibold text-[#3b5998]">
+                  <span className="inline md:flex justify-center items-center text-xl font-semibold text-white">
               Cart
             </span>
                 </Link>
@@ -65,14 +65,14 @@ const NavBar = () => {
                   <FontAwesomeIcon
                     className="mr-2 w-[20px] h-[30px]"
                     icon={faUser}
-                    color="#3b5998"
+                    color="white"
                     size="lg"
                   />
-                  <span className="absolute bg-[#000000] ml-3 mb-7 rounded-full p-1 w-7 inline md:flex justify-center items-center text-sm font-semibold text-[#FFFFFF]">
+                  <span className="absolute bg-[#000000] ml-3 mb-7 rounded-full p-1 w-7 inline md:flex justify-center items-center text-sm font-semibold text-white">
                     {user.points || '0'}
             </span>
                   <span
-                    className="inline md:flex justify-center items-center text-xl font-semibold text-[#3b5998]">
+                    className="inline md:flex justify-center items-center text-xl font-semibold text-white">
               Points
             </span>
                 </Link>
@@ -82,11 +82,11 @@ const NavBar = () => {
                   <FontAwesomeIcon
                     className="mr-2 w-[20px] h-[30px]"
                     icon={faRightFromBracket}
-                    color="#3b5998"
+                    color="white"
                     size="lg"
                   />
                   <span
-                    className="inline md:flex justify-center items-center text-xl font-semibold text-[#3b5998]">
+                    className="inline md:flex justify-center items-center text-xl font-semibold text-white">
               Log Out
             </span>
                 </Link>

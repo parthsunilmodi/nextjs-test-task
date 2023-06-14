@@ -21,7 +21,7 @@ const Product = memo(
     const { user } = useAppSelector((state) => state.user)
     const navigate = useRouter();
     const dispatch = useAppDispatch();
-    
+
     const handleAddToCart = async () => {
       if(isCart(product) > 0) {
         navigate.push('/cart')
@@ -30,14 +30,14 @@ const Product = memo(
         navigate.push('/cart')
       }
     };
-  
+
     const isCart = (item: IProduct) => {
       return cart?.filter((pro: { _id: string; }) => pro._id === item._id).length
     };
-    
+
     const calculateTotal = (items) =>
       items.reduce((acc, item) => acc + item.amount * item.points, 0);
-    
+
     return (
 	    <div
 		    className="w-72 bg-white shadow-md rounded-xl duration-500 hover:scale-105 hover:shadow-xl"
@@ -55,7 +55,7 @@ const Product = memo(
 			    <span className="text-gray-400 mr-3 uppercase text-xs">Brand</span>
 			    <p className="text-lg font-bold text-black truncate block capitalize">{product.title}</p>
 			    <p className="text-lg font-bold text-black truncate block capitalize">{product.writer}</p>
-			    <div className="w-full text-white bg-[#8b9dc3] p-4 flex justify-between content-center rounded-lg">
+			    <div className="w-full text-white bg-[#3b5998] p-4 flex justify-between content-center rounded-lg">
             {
               isCart(product) > 0 ?
                 <button

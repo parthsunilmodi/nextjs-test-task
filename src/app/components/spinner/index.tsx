@@ -3,7 +3,7 @@ import React from 'react';
 const Spinner = () => {
   return (
     <>
-      <div className="flex flex-col items-center fixed top-[250px] z-[9999]">
+      <div className="flex flex-col items-center fixed top-[250px] z-[9999] left-[900px]">
         <svg className="animate-spin -ml-1 mr-3 h-20 w-20 text-black" xmlns="http://www.w3.org/2000/svg" fill="none"
              viewBox="0 0 24 24">
           <circle className="opacity-25" stroke="currentColor" stroke-width="4" cx="12" cy="12" r="10">
