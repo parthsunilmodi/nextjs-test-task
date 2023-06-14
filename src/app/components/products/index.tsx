@@ -57,7 +57,6 @@ const ProductList = () => {
     <InfiniteScroll next={async() => {
       await getBooks()
     }} hasMore={hasMore} loader={loading} dataLength={product?.length} scrollThreshold={0.80}>
-      {loading ? <Spinner/> : null}
       <div className="flex bg-[#dfe3ee] w-[100%] justify-center">
         <div className="flex flex-col justify-center mt-[70px]">
           <div className="">
