@@ -56,9 +56,9 @@ const ProductList = () => {
     <InfiniteScroll next={async() => {
       await getBooks()
     }} hasMore={hasMore} loader={loading} dataLength={product?.length} scrollThreshold={0.80}>
-      <div className="flex bg-[#dfe3ee] w-[100%] justify-center">
+      <div className="flex w-[100%] justify-center bg-[#dfe3ee]">
         <div className="flex flex-col justify-center mt-[100px]">
-          {/*<FilterSection/>*/}
+          <FilterSection/>
           <div className="flex flex-col sm:flex-row flex-wrap mb-10 m-10 gap-[32px] justify-center">
             {product?.map((item: IProduct) => (
               <Product
@@ -67,8 +67,8 @@ const ProductList = () => {
             ))}
           </div>
         </div>
-        {loading && <Spinner/>}
       </div>
+      {loading && <Spinner/>}
     </InfiniteScroll>
   )
 };

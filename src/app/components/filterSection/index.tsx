@@ -5,12 +5,12 @@ const FilterSection = () => {
 
   return (
     <>
-      <header className="lg:px-16 px-8 flex flex-wrap items-center py-4 bg-[#dfe3ee]">
+      <header className="lg:px-16 px-8 flex flex-wrap items-center py-4">
         <div className="flex-1 flex justify-between items-center">
           <form className="b-4 w-[100%] md:mb-0 md:w-1/3">
             <label className="hidden" htmlFor="search-form">Search</label>
             <input
-              className="bg-grey-lightest border-2 focus:border-orange p-2 rounded-lg shadow-inner w-full"
+              className="border-2 p-2 rounded-lg shadow-inner w-full"
               placeholder="Search"
               type="text"
               value={searchText}
