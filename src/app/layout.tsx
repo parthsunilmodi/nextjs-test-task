@@ -2,7 +2,7 @@ import React from 'react';
 import Providers from '@/redux/provider';
 import './globals.css';
 import 'tailwindcss/tailwind.css';
-import WithAuth from "../components/Auth";
+import '@fortawesome/fontawesome-svg-core/styles.css';
 
 export const metadata = {
   title: 'Create Next App',
@@ -12,11 +12,9 @@ export const metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body>
+      <body className="bg-[#dfe3ee]">
         <Providers>
-          {/*<WithAuth>*/}
-            {children}
-          {/*</WithAuth>*/}
+          {children}
         </Providers>
       </body>
     </html>

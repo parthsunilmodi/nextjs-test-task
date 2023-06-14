@@ -25,7 +25,7 @@ export const fetchProduct = createAsyncThunk(
       return response.data
     } catch (e) {
       if (request.isAxiosError(e) && e.response) {
-        throw new Error(e.message)
+        throw new Error(e.response.data.message)
       }
     }
   },
@@ -38,10 +38,9 @@ export const addProductToCart = createAsyncThunk(
         return data
     } catch (e) {
       if (request.isAxiosError(e) && e.response) {
-        throw new Error(e.message)
+        throw new Error(e.response.data.message)
       }
     }
-    
   },
 );
 
@@ -52,10 +51,9 @@ export const decreaseProduct = createAsyncThunk(
       return data
     } catch (e) {
       if (request.isAxiosError(e) && e.response) {
-        throw new Error(e.message)
+        throw new Error(e.response.data.message)
       }
     }
-    
   },
 );
 
@@ -66,7 +64,7 @@ export const increaseProduct = createAsyncThunk(
       return data
     } catch (e) {
       if (request.isAxiosError(e) && e.response) {
-        throw new Error(e.message)
+        throw new Error(e.response.data.message)
       }
     }
     
@@ -81,7 +79,7 @@ export const orderCheckout = createAsyncThunk(
       return response
     } catch (e) {
       if (request.isAxiosError(e) && e.response) {
-        throw new Error(e.message)
+        throw new Error(e.response.data.message)
       }
     }
   },
@@ -96,7 +94,7 @@ export const getOrder = createAsyncThunk(
       return response.data
     } catch (e) {
       if (request.isAxiosError(e) && e.response) {
-        throw new Error(e.message)
+        throw new Error(e.response.data.message)
       }
     }
   },
@@ -110,7 +108,7 @@ export const removeProductFromCart = createAsyncThunk(
       return item
     } catch (e) {
       if (request.isAxiosError(e) && e.response) {
-        throw new Error(e.message)
+        throw new Error(e.response.data.message)
       }
     }
   },
@@ -124,7 +122,7 @@ export const cancelOrder = createAsyncThunk(
       return response
     } catch (e) {
       if (request.isAxiosError(e) && e.response) {
-        throw new Error(e.message)
+        throw new Error(e.response.data.message)
       }
     }
   },

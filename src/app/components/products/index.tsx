@@ -36,7 +36,7 @@ const ProductList = () => {
   const dispatch = useAppDispatch();
   const [ page, setPage ] = useState(1);
   const [ product, setProduct ] = useState<any>([]);
-  const {products, hasMore, loading}: IProductList = useAppSelector((state) => state.product);
+  const { products, hasMore, loading }: IProductList = useAppSelector((state) => state.product);
 
   useEffect(() => {
     getBooks();
@@ -51,25 +51,23 @@ const ProductList = () => {
     setProduct([ ...product, ...products ])
   }, [ products ]);
 
-  // @ts-ignore
   return (
-    <InfiniteScroll next={async() => {
-      await getBooks()
-    }} hasMore={hasMore} loader={loading} dataLength={product?.length} scrollThreshold={0.80}>
-      <div className="flex w-[100%] justify-center bg-[#dfe3ee]">
-        <div className="flex flex-col justify-center mt-[100px]">
-          <FilterSection/>
-          <div className="flex flex-col sm:flex-row flex-wrap mb-10 m-10 gap-[32px] justify-center">
-            {product?.map((item: IProduct) => (
-              <Product
-                product={item}
-              />
-            ))}
+      <InfiniteScroll next={async() => {
+        await getBooks()
+      }} hasMore={hasMore} loader={false} dataLength={product?.length} scrollThreshold={0.80}>
+        <div className="flex w-[100%] justify-center bg-[#dfe3ee] h-[calc(100vh - 120px)]">
+          <div className="flex flex-col justify-center gap-2 mt-[100px] w-full">
+            <FilterSection/>
+              <div className="flex flex-col sm:flex-row flex-wrap mb-10 m-10 gap-[32px] justify-center">
+                {product?.map((item: IProduct) => (
+                  <Product
+                    product={item}
+                  />
+                ))}
+              </div>
           </div>
         </div>
-      </div>
-      {loading && <Spinner/>}
-    </InfiniteScroll>
+      </InfiniteScroll>
   )
 };
 

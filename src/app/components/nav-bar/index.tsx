@@ -9,7 +9,7 @@ import {
   faUser
 } from '@fortawesome/free-solid-svg-icons';
 import {useAppDispatch, useAppSelector} from "../../../redux/hooks";
-import {logOutUser} from "../../../redux/slice/users/usersApi";
+import { logOutUser } from "../../../redux/slice/users/usersApi";
 
 const NavBar = () => {
   const { user } = useAppSelector((state) => state.user);
@@ -29,7 +29,6 @@ const NavBar = () => {
             </Link>
           </h1>
         </div>
-
         <label htmlFor="menu-toggle" className="pointer-cursor md:hidden block">
           <FontAwesomeIcon
             icon={faBars}
@@ -37,7 +36,6 @@ const NavBar = () => {
           />
         </label>
         <input className="hidden" type="checkbox" id="menu-toggle"/>
-
         <div className="hidden md:flex md:items-center md:w-auto w-full" id="menu">
           <nav>
             <ul className="md:flex items-center justify-between text-base text-gray-700 pt-4 md:pt-0">
@@ -50,8 +48,8 @@ const NavBar = () => {
                     size="lg"
                   />
                   <span className="inline md:flex justify-center items-center text-xl font-semibold text-white">
-              My Order
-            </span>
+                    My Order
+                  </span>
                 </Link>
               </li>
               <li>
@@ -63,26 +61,20 @@ const NavBar = () => {
                     size="lg"
                   />
                   <span className="inline md:flex justify-center items-center text-xl font-semibold text-white">
-              Cart
-            </span>
+                    Cart
+                  </span>
                 </Link>
               </li>
               <li>
-                <Link className="md:p-4 py-3 px-0 flex items-center" href="/cart">
-                  <FontAwesomeIcon
-                    className="mr-2 w-[20px] h-[30px]"
-                    icon={faUser}
-                    color="white"
-                    size="lg"
-                  />
-                  <span className="absolute bg-[#000000] ml-3 mb-7 rounded-full p-1 w-7 inline md:flex justify-center items-center text-sm font-semibold text-white">
-                    {user.points || '0'}
-            </span>
-                  <span
-                    className="inline md:flex justify-center items-center text-xl font-semibold text-white">
-              Points
-            </span>
-                </Link>
+                <FontAwesomeIcon
+                  className="mr-2 w-[20px] h-[30px]"
+                  icon={faUser}
+                  color="white"
+                  size="lg"
+                />
+                <span className="absolute bg-[#FF0000] ml-3 mb-7 top-3 rounded-full p-1 w-7 inline md:flex justify-center items-center text-sm font-semibold text-white">
+                  {user.points || '0'}
+                 </span>
               </li>
               <li>
                 <Link className="md:p-4 py-3 px-0 flex items-center" href="/login" onClick={handleLogOut}>
@@ -92,10 +84,9 @@ const NavBar = () => {
                     color="white"
                     size="lg"
                   />
-                  <span
-                    className="inline md:flex justify-center items-center text-xl font-semibold text-white">
-              Log Out
-            </span>
+                  <span className="inline md:flex justify-center items-center text-xl font-semibold text-white">
+                    Log Out
+                  </span>
                 </Link>
               </li>
             </ul>

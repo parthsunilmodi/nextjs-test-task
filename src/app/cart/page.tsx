@@ -12,6 +12,7 @@ import {
   removeProductFromCart
 } from "../../redux/slice/product/productApi";
 import { useRouter } from "next/navigation";
+import Spinner from "../components/spinner";
 
 interface ICart {
   _id: string;
@@ -24,7 +25,7 @@ interface ICart {
 }
 
 const Cart = () => {
-  const { cart } = useAppSelector((state) => state.product);
+  const { cart, loading } = useAppSelector((state) => state.product);
   const { user } = useAppSelector((state) => state.user);
   const navigate = useRouter();
   const dispatch = useAppDispatch();
@@ -111,11 +112,11 @@ const Cart = () => {
                 </div>
                 <div className="flex items-center justify-evenly p-2 w-[50%] gap-3 border-1 rounded-lg h-14">
                   <button onClick={() => handleDecrease(item)} disabled={item.amount < 2}>
-                    <FontAwesomeIcon icon={faMinus} className="bg-[#3b5998] p-3 rounded text-white"/>
+                    <FontAwesomeIcon icon={faMinus} className={`${item.amount < 2 ? `bg-[#d3d3d3]` : 'bg-[#3b5998]'} p-3 rounded text-white`}/>
                   </button>
                   {item.amount}
                   <button onClick={() => handleIncrement(item)} disabled={calculateTotal(cart) >= user.points}>
-                    <FontAwesomeIcon icon={faPlus} className="bg-[#3b5998] p-3 rounded text-white"/>
+                    <FontAwesomeIcon icon={faPlus} className={`${calculateTotal(cart) >= user.points ? `bg-[#d3d3d3]` : 'bg-[#3b5998]'} p-3 rounded text-white`}/>
                   </button>
                   <button onClick={() => handleRemoveItem(item)}>
                     <FontAwesomeIcon
@@ -128,10 +129,10 @@ const Cart = () => {
               </div>
             ))}
             <button
-              className="mt-8 w-full font-bold bg-[#3b5998] rounded-lg p-4 text-white text-lg"
+              className={`mt-8 w-full font-bold ${loading ? `bg-[#d3d3d3]` : 'bg-[#3b5998]'} rounded-lg flex items-center justify-center p-4 text-white text-lg`}
               onClick={handleCheckout}
             >
-              CHECKOUT
+              {loading && <Spinner />} CHECKOUT
             </button>
           </div>
         )}

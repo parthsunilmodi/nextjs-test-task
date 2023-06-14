@@ -24,7 +24,7 @@ export const loginUser = createAsyncThunk(
       return response
     } catch (e) {
       if (request.isAxiosError(e) && e.response) {
-        throw new Error(e.message)
+        throw new Error(e.response.data.message)
       }
     }
     
@@ -42,7 +42,7 @@ export const signUpUser = createAsyncThunk(
       return response
     } catch (e) {
       if (request.isAxiosError(e) && e.response) {
-        throw new Error(e.message)
+        throw new Error(e.response.data.message)
       }
     }
   },
@@ -56,7 +56,7 @@ export const getUser = createAsyncThunk(
       return response.data
     } catch (e) {
       if (request.isAxiosError(e) && e.response) {
-        throw new Error(e.message)
+        throw new Error(e.response.data.message)
       }
     }
   },
@@ -69,7 +69,7 @@ export const logOutUser = createAsyncThunk(
       localStorage.clear();
     } catch (e) {
       if (request.isAxiosError(e) && e.response) {
-        throw new Error(e.message)
+        throw new Error(e.response.data.message)
       }
     }
   },

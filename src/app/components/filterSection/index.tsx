@@ -5,9 +5,9 @@ const FilterSection = () => {
 
   return (
     <>
-      <header className="lg:px-16 px-8 flex flex-wrap items-center py-4">
+      <header className="w-full lg:px-16 px-8 flex flex-wrap items-center py-4">
         <div className="flex-1 flex justify-between items-center">
-          <form className="b-4 w-[100%] md:mb-0 md:w-1/3">
+          <form className="b-4 w-full md:mb-0 md:w-1/3">
             <label className="hidden" htmlFor="search-form">Search</label>
             <input
               className="border-2 p-2 rounded-lg shadow-inner w-full"
