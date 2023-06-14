@@ -5,7 +5,6 @@ import FilterSection from "../filterSection";
 import InfiniteScroll from "react-infinite-scroll-component";
 import Product from './product';
 import Spinner from "../spinner";
-import { useSelector } from "react-redux";
 
 interface IProduct {
   _id: string;
@@ -58,7 +57,7 @@ const ProductList = () => {
       await getBooks()
     }} hasMore={hasMore} loader={loading} dataLength={product?.length} scrollThreshold={0.80}>
       <div className="flex bg-[#dfe3ee] w-[100%] justify-center">
-        <div className="flex flex-col justify-center mt-[70px]">
+        <div className="flex flex-col justify-center mt-[100px]">
           <div className="">
             <FilterSection/>
           </div>
@@ -70,8 +69,8 @@ const ProductList = () => {
             ))}
           </div>
         </div>
+        {loading && <Spinner/>}
       </div>
-
     </InfiniteScroll>
   )
 };
