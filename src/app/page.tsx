@@ -8,8 +8,10 @@ import FilterSection from "./components/filterSection";
 const Home = () => {
   return (
     <WithAuth>
-      <NavBar/>
-      <ProductList/>
+      <>
+        <NavBar/>
+        <ProductList/>
+      </>
     </WithAuth>
   );
 };
