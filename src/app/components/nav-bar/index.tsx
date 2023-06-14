@@ -8,10 +8,17 @@ import {
   faBars,
   faUser
 } from '@fortawesome/free-solid-svg-icons';
-import { useAppSelector } from "../../../redux/hooks";
+import {useAppDispatch, useAppSelector} from "../../../redux/hooks";
+import {logOutUser} from "../../../redux/slice/users/usersApi";
 
 const NavBar = () => {
   const { user } = useAppSelector((state) => state.user);
+  const dispatch = useAppDispatch();
+  
+  const handleLogOut = () => {
+    dispatch(logOutUser())
+  };
+  
   return (
     <>
       <header className="lg:px-16 px-8 flex flex-wrap items-center py-4 bg-[#dfe3ee] w-[100%] z-10 fixed">
@@ -78,7 +85,7 @@ const NavBar = () => {
                 </Link>
               </li>
               <li>
-                <Link className="md:p-4 py-3 px-0 flex items-center" href="/login">
+                <Link className="md:p-4 py-3 px-0 flex items-center" href="/login" onClick={handleLogOut}>
                   <FontAwesomeIcon
                     className="mr-2 w-[20px] h-[30px]"
                     icon={faRightFromBracket}

@@ -90,9 +90,9 @@ export const orderCheckout = createAsyncThunk(
 
 export const getOrder = createAsyncThunk(
   '/getOrder',
-  async (data:any) => {
+  async ({page, limit}: IPagination) => {
     try {
-      const response = await axiosInstance.get(`/orders`);
+      const response = await axiosInstance.get(`/orders?page=${page}&limit=${limit}`);
       return response.data
     } catch (e) {
       if (request.isAxiosError(e) && e.response) {
@@ -108,6 +108,20 @@ export const removeProductFromCart = createAsyncThunk(
   async (item:any) => {
     try {
       return item
+    } catch (e) {
+      if (request.isAxiosError(e) && e.response) {
+        throw new Error(e.message)
+      }
+    }
+  },
+);
+
+export const cancelOrder = createAsyncThunk(
+  '/cancelOrder',
+  async (data:string) => {
+    try {
+      const response = await axiosInstance.get(`/orders/${data}`);
+      return response
     } catch (e) {
       if (request.isAxiosError(e) && e.response) {
         throw new Error(e.message)

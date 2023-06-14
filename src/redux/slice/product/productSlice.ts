@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import {
-  addProductToCart,
+  addProductToCart, cancelOrder,
   decreaseProduct,
   fetchProduct,
   getOrder,
@@ -115,6 +115,7 @@ export const productSlice = createSlice({
     builder.addCase(getOrder.fulfilled, (state:any, action) => {
       state.order = action.payload;
       state.loading = false;
+      state.hasMore = !!action.payload
     });
     builder.addCase(getOrder.rejected, (state, action) => {
       state.loading = false;
@@ -128,6 +129,23 @@ export const productSlice = createSlice({
       state.loading = false;
     });
     builder.addCase(removeProductFromCart.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.error.message
+    });
+    builder.addCase(cancelOrder.pending, (state, action) => {
+      state.loading = true;
+    });
+    builder.addCase(cancelOrder.fulfilled, (state:any, action) => {
+      state.loading = false;
+      state.order = state.order?.map((item) => {
+        if(item._id !== action.payload.data._id) {
+          return item = action.payload.data
+        } else {
+          return  item
+        }
+      })
+    });
+    builder.addCase(cancelOrder.rejected, (state, action) => {
       state.loading = false;
       state.error = action.error.message
     });

@@ -2,7 +2,7 @@ import React from 'react';
 import Providers from '@/redux/provider';
 import './globals.css';
 import 'tailwindcss/tailwind.css';
-// import WithAuth from "../lib/Auth";
+import WithAuth from "../components/Auth";
 
 export const metadata = {
   title: 'Create Next App',
@@ -13,9 +13,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <body>
-        {/*<WithAuth>*/}
-          <Providers>{children}</Providers>
-        {/*</WithAuth>*/}
+        <Providers>
+          {/*<WithAuth>*/}
+            {children}
+          {/*</WithAuth>*/}
+        </Providers>
       </body>
     </html>
   )

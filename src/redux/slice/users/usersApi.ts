@@ -62,3 +62,17 @@ export const getUser = createAsyncThunk(
   },
 );
 
+export const logOutUser = createAsyncThunk(
+  'logOutUser',
+  async () => {
+    try {
+      localStorage.clear();
+    } catch (e) {
+      if (request.isAxiosError(e) && e.response) {
+        throw new Error(e.message)
+      }
+    }
+  },
+);
+
+
