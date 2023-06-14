@@ -58,9 +58,7 @@ const ProductList = () => {
     }} hasMore={hasMore} loader={loading} dataLength={product?.length} scrollThreshold={0.80}>
       <div className="flex bg-[#dfe3ee] w-[100%] justify-center">
         <div className="flex flex-col justify-center mt-[100px]">
-          <div className="">
-            <FilterSection/>
-          </div>
+          {/*<FilterSection/>*/}
           <div className="flex flex-col sm:flex-row flex-wrap mb-10 m-10 gap-[32px] justify-center">
             {product?.map((item: IProduct) => (
               <Product

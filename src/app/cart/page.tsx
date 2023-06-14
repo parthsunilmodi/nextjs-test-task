@@ -1,5 +1,5 @@
 'use client';
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { faArrowLeft, faMinusCircle, faPlus, faMinus } from '@fortawesome/free-solid-svg-icons';
@@ -29,7 +29,7 @@ const Cart = () => {
   const navigate = useRouter();
   const dispatch = useAppDispatch();
 
-  
+
   const handleIncrement = (item:ICart) => {
     const data = cart.map((product) => {
       if(item._id === product._id) {
@@ -43,7 +43,7 @@ const Cart = () => {
     });
     dispatch(increaseProduct(data))
   };
-  
+
   const handleDecrease = (item:ICart) => {
     const data = cart.map((product) => {
       if(item._id === product._id) {
@@ -57,7 +57,7 @@ const Cart = () => {
     });
     dispatch(decreaseProduct(data))
   };
-  
+
   const handleCheckout = async () => {
     const cartItems = cart.map((item) => {
       return {bookId: item._id, quantity: item.amount}
@@ -67,17 +67,18 @@ const Cart = () => {
       navigate.push('/order')
     }
   };
-  
+
   const calculateTotal = (items) =>
     items.reduce((acc, item) => acc + item.amount * item.points, 0);
-  
+
   const handleRemoveItem = (item: ICart ) => {
     dispatch(removeProductFromCart(item))
   };
-  
+
   return (
+    <div className="flex w-[100%] h-[100vh] bg-[#dfe3ee]">
       <div
-        className={"bg-white p-4 sm:p-10"}
+        className={"p-4 sm:p-10 w-[100%]"}
         style={{minHeight: "150px"}}
       >
         <Link href="/" className="flex content-center mb-8 text-indigo-800">
@@ -96,7 +97,7 @@ const Cart = () => {
             {cart?.map((item: ICart, id: string | number | null | undefined) => (
               <div
                 key={id}
-                className="relative w-full flex mb-4 rounded shadow-lg p-5 items-center"
+                className="bg-white relative w-full flex mb-4 rounded shadow-lg p-5 items-center"
               >
                 <Image src={item.coverImage} height={100} width={100} alt={item.title} className="w-32"/>
                 <div className="p-8 w-full bg-white flex flex-col justify-between leading-normal">
@@ -110,19 +111,19 @@ const Cart = () => {
                 </div>
                 <div className="flex items-center justify-evenly p-2 w-[50%] gap-3 border-1 rounded-lg h-14">
                   <button onClick={() => handleDecrease(item)} disabled={item.amount < 2}>
-                  <FontAwesomeIcon icon={faMinus} className="bg-[#3b5998] p-3 rounded text-white"/>
+                    <FontAwesomeIcon icon={faMinus} className="bg-[#3b5998] p-3 rounded text-white"/>
                   </button>
                   {item.amount}
-                <button onClick={() => handleIncrement(item)} disabled={calculateTotal(cart) >= user.points}>
-                  <FontAwesomeIcon icon={faPlus} className="bg-[#8b9dc3] p-3 rounded"/>
-                </button>
-                <button onClick={() => handleRemoveItem(item)}>
-                  <FontAwesomeIcon
-                    icon={faMinusCircle}
-                    color="#c53030"
-                    size="2x"
-                  />
-                </button>
+                  <button onClick={() => handleIncrement(item)} disabled={calculateTotal(cart) >= user.points}>
+                    <FontAwesomeIcon icon={faPlus} className="bg-[#3b5998] p-3 rounded text-white"/>
+                  </button>
+                  <button onClick={() => handleRemoveItem(item)}>
+                    <FontAwesomeIcon
+                      icon={faMinusCircle}
+                      color="#c53030"
+                      size="2x"
+                    />
+                  </button>
                 </div>
               </div>
             ))}
@@ -135,6 +136,7 @@ const Cart = () => {
           </div>
         )}
       </div>
+    </div>
   );
 };
 

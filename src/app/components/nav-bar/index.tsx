@@ -71,6 +71,10 @@ const NavBar = () => {
                   <span className="absolute bg-[#000000] ml-3 mb-7 rounded-full p-1 w-7 inline md:flex justify-center items-center text-sm font-semibold text-[#FFFFFF]">
                     {user.points || '0'}
             </span>
+                  <span
+                    className="inline md:flex justify-center items-center text-xl font-semibold text-[#3b5998]">
+              Points
+            </span>
                 </Link>
               </li>
               <li>
