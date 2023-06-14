@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
-import { Select } from '../dropdown';
 
 const FilterSection = () => {
-  const [searchText, setSearchText] = useState<string>('');
-  
+  const [ searchText, setSearchText ] = useState<string>('');
+
   return (
     <>
       <header className="lg:px-16 px-8 flex flex-wrap items-center py-4 bg-[#dfe3ee]">
@@ -19,18 +18,6 @@ const FilterSection = () => {
             />
             <button className="hidden">Submit</button>
           </form>
-        </div>
-        
-        <div className="flex md:items-center md:w-auto w-full" id="menu">
-          <nav>
-            <ul className="md:flex items-center justify-between text-base gap-[10px] text-gray-700 pt-4 md:pt-0">
-              <li>
-                <div className="w-45">
-                  <Select options={["Mick Poulaz", "Julien Schiano"]} />
-                </div>
-              </li>
-            </ul>
-          </nav>
         </div>
       </header>
     </>

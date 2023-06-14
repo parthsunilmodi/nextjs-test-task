@@ -45,6 +45,7 @@ export const productSlice = createSlice({
       state.loading = true;
     });
     builder.addCase(fetchProduct.fulfilled, (state, action) => {
+      state.loading = false;
       state.products = action.payload;
       state.hasMore = !!action.payload
     });
@@ -56,6 +57,7 @@ export const productSlice = createSlice({
       state.loading = true;
     });
     builder.addCase(addProductToCart.fulfilled, (state:any, action) => {
+      state.loading = false;
       state.cart = [action.payload, ...state.cart];
     });
     builder.addCase(addProductToCart.rejected, (state, action) => {
@@ -66,6 +68,7 @@ export const productSlice = createSlice({
       state.loading = true;
     });
     builder.addCase(decreaseProduct.fulfilled, (state:any, action) => {
+      state.loading = false;
       state.cart = action.payload;
     });
     builder.addCase(decreaseProduct.rejected, (state, action) => {
@@ -76,6 +79,7 @@ export const productSlice = createSlice({
       state.loading = true;
     });
     builder.addCase(increaseProduct.fulfilled, (state:any, action) => {
+      state.loading = false;
       state.cart = action.payload;
     });
     builder.addCase(increaseProduct.rejected, (state, action) => {

@@ -11,7 +11,7 @@ import {
 const NavBar = () => {
   return (
     <>
-      <header className="lg:px-16 px-8 flex flex-wrap items-center py-4 bg-[#dfe3ee]">
+      <header className="lg:px-16 px-8 flex flex-wrap items-center py-4 bg-[#dfe3ee] w-[100%] z-10 fixed">
         <div className="flex-1 flex justify-between items-center">
           <h1 className="leading-none text-2xl text-grey-darkest">
             <Link className="no-underline text-[#3b5998] text-4xl font-bold" href="/">
@@ -19,7 +19,7 @@ const NavBar = () => {
             </Link>
           </h1>
         </div>
-    
+
         <label htmlFor="menu-toggle" className="pointer-cursor md:hidden block">
           <FontAwesomeIcon
             icon={faBars}
@@ -27,7 +27,7 @@ const NavBar = () => {
           />
         </label>
         <input className="hidden" type="checkbox" id="menu-toggle"/>
-    
+
         <div className="hidden md:flex md:items-center md:w-auto w-full" id="menu">
           <nav>
             <ul className="md:flex items-center justify-between text-base text-gray-700 pt-4 md:pt-0">

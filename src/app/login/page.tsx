@@ -6,9 +6,9 @@ import Link from 'next/link';
 import { useFormik, FormikProvider, } from 'formik';
 import * as Yup from 'yup';
 import loginBg from '../../assets/img/logo.png';
-import {loginUser, signUpUser} from "../../redux/slice/users/usersApi";
-import {useAppDispatch} from "../../redux/hooks";
-import {useRouter} from "next/navigation";
+import { loginUser, signUpUser } from "../../redux/slice/users/usersApi";
+import { useAppDispatch } from "../../redux/hooks";
+import { useRouter } from "next/navigation";
 
 interface IBookFormValues {
   username: string;
@@ -23,17 +23,17 @@ const validationSchema = Yup.object().shape({
 const Login: NextPage = () => {
   const dispatch = useAppDispatch();
   const router = useRouter();
-  
+
   const formikValidation = useFormik({
     initialValues: {
       username: '',
       password: '',
     },
     validationSchema: validationSchema,
-    onSubmit: async (values: IBookFormValues, {resetForm}) => {
+    onSubmit: async(values: IBookFormValues, {resetForm}) => {
       if (values) {
         const response: any = await dispatch(loginUser(values))
-        if(response.payload.status === 200 || 201) {
+        if (response.payload.status === 200 || 201) {
           router.push('/')
         }
       }
@@ -102,9 +102,11 @@ const Login: NextPage = () => {
                     )}
                   </div>
                   <div className="mt-10">
-                    <button className="bg-indigo-500 text-gray-100 p-4 w-full rounded-full tracking-wide
+                    <button
+                      className="bg-indigo-500 text-gray-100 p-4 w-full rounded-full tracking-wide
                                 font-semibold font-display focus:outline-none focus:shadow-outline hover:bg-indigo-600
-                                shadow-lg">
+                                shadow-lg"
+                    >
                       Log In
                     </button>
                   </div>

@@ -1,7 +1,6 @@
-"use client"
+"use client";
 import React, { memo } from 'react';
 import Image from 'next/image';
-import loginBg from "../../../assets/img/sign-up.jpeg";
 import {useAppDispatch, useAppSelector} from "../../../redux/hooks";
 import {useRouter} from "next/navigation";
 import {addProductToCart} from "../../../redux/slice/product/productApi";
@@ -20,7 +19,7 @@ const Product = memo(
     const { cart } = useAppSelector((state) => state.product)
     const navigate = useRouter();
     const dispatch = useAppDispatch();
-    
+
     const handleAddToCart = async () => {
       if(isCart(product) > 0) {
         navigate.push('/cart')
@@ -29,9 +28,9 @@ const Product = memo(
         navigate.push('/cart')
       }
     };
-  
+
     const isCart = (item: IProduct) => {
-      return cart?.filter((pro) => pro._id === item._id).length
+      return cart?.filter((pro: { _id: string; }) => pro._id === item._id).length
     };
 
     return (
