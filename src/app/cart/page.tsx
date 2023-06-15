@@ -29,14 +29,16 @@ const Cart = () => {
   const { user } = useAppSelector((state) => state.user);
   const navigate = useRouter();
   const dispatch = useAppDispatch();
-const [bookCart, setBookCart] = useState<ICart>([]);
-  const cartStore = JSON?.parse(localStorage.getItem('cart')) || cart;
-
+  const [bookCart, setBookCart] = useState<ICart[]>([]);
+  const  localCartData = JSON.parse(localStorage.getItem('cart') || '[]');
+  const cartStore: ICart[] | [] = localCartData|| cart;
+  
   useEffect(() => {
       setBookCart(cartStore);
   },[cart]);
+  
   const handleIncrement = (item: ICart) => {
-    const data = bookCart.map((product: any) => {
+    const data = bookCart.map((product: ICart) => {
       if (item._id === product._id) {
         return {
           ...product,
@@ -63,7 +65,7 @@ const [bookCart, setBookCart] = useState<ICart>([]);
     dispatch(decreaseProduct(data));
   };
 
-
+  
   const handleCheckout = async () => {
     const cartItems = bookCart.map((item: any) => {
       return { bookId: item._id, quantity: item.amount };

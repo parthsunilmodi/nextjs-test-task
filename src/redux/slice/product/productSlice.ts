@@ -79,7 +79,7 @@ export const productSlice = createSlice({
     });
     builder.addCase(addProductToCart.fulfilled, (state:any, action) => {
       state.cart = [action.payload, ...state.cart];
-      const cartItem = JSON.parse(localStorage.getItem('cart')) || [];
+      const cartItem =JSON.parse(localStorage.getItem('cart') || '[]');
       localStorage.setItem('cart', JSON.stringify([action.payload, ...cartItem]));
       state.loading = false;
     });
@@ -105,7 +105,6 @@ export const productSlice = createSlice({
     builder.addCase(increaseProduct.fulfilled, (state:any, action) => {
       state.loading = false;
       state.cart = action.payload;
-      const cartItem = localStorage.getItem('cart');
       localStorage.setItem('cart', JSON.stringify(action.payload));
     });
     builder.addCase(increaseProduct.rejected, (state, action) => {
@@ -141,7 +140,7 @@ export const productSlice = createSlice({
       state.loading = true;
     });
     builder.addCase(removeProductFromCart.fulfilled, (state:any, action) => {
-      const cartItem = JSON.parse(localStorage.getItem('cart')) || [];
+      const cartItem =JSON.parse(localStorage.getItem('cart') || '[]');
       state.cart = cartItem.filter((item: ICart) => item._id !== action.payload._id);
       localStorage.setItem('cart', JSON.stringify(state.cart));
       state.loading = false;
