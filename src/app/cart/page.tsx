@@ -1,5 +1,5 @@
 'use client';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { faArrowLeft, faMinusCircle, faPlus, faMinus } from '@fortawesome/free-solid-svg-icons';
@@ -29,9 +29,14 @@ const Cart = () => {
   const { user } = useAppSelector((state) => state.user);
   const navigate = useRouter();
   const dispatch = useAppDispatch();
-
+const [bookCart, setBookCart] = useState<ICart>([]);
+  const cartStore = JSON?.parse(localStorage.getItem('cart')) || cart;
+  
+  useEffect(() => {
+      setBookCart(cartStore);
+  },[cart]);
   const handleIncrement = (item: ICart) => {
-    const data = cart.map((product: any) => {
+    const data = bookCart.map((product: any) => {
       if (item._id === product._id) {
         return {
           ...product,
@@ -45,7 +50,7 @@ const Cart = () => {
   };
 
   const handleDecrease = (item: ICart) => {
-    const data = cart.map((product: any) => {
+    const data = bookCart.map((product: any) => {
       if (item._id === product._id) {
         return {
           ...product,
@@ -58,8 +63,9 @@ const Cart = () => {
     dispatch(decreaseProduct(data));
   };
 
+  
   const handleCheckout = async () => {
-    const cartItems = cart.map((item: any) => {
+    const cartItems = bookCart.map((item: any) => {
       return { bookId: item._id, quantity: item.amount };
     });
     const response = await dispatch(orderCheckout({ books: cartItems }));
@@ -87,14 +93,14 @@ const Cart = () => {
         </Link>
         <h1 className="text-5xl font-bold mb-8 text-[#3b5998]">Shopping Cart</h1>
 
-        {cart.length === 0 ? (
+        {bookCart.length === 0 ? (
           <h3 className="text-gray-500 text-lg font-bold">Cart is empty</h3>
         ) : (
           <div>
             <h2 className="mb-16 text-4xl font-bold w-full text-right">
-              Total: {calculateTotal(cart).toFixed(2)}
+              Total: {calculateTotal(bookCart).toFixed(2)}
             </h2>
-            {cart?.map((item: ICart, id: string | number | null | undefined) => (
+            {bookCart?.map((item: ICart, id: string | number | null | undefined) => (
               <div
                 key={id}
                 className="bg-white relative w-full flex mb-4 rounded shadow-lg p-5 items-center"
@@ -104,9 +110,8 @@ const Cart = () => {
                   <h1 className="text-5xl font-bold text-[#3b5998]">{item.title}</h1>
                   <div className="text-lg font-bold">
                     <span className="text-2xl">$ {item.points}</span> x{' '}
-                    <span className="text-2xl">{item.amount}</span>
-                    <span className="text-2xl">{(item.amount * item.points).toFixed(2)}</span>
-
+                    <span className="text-2xl">{item.amount}</span> = {' '}
+                    <span className="text-2xl">{(item.amount * item.points)}</span>
                   </div>
                 </div>
                 <div className="flex items-center justify-evenly p-2 w-[50%] gap-3 border-1 rounded-lg h-14">
@@ -115,9 +120,9 @@ const Cart = () => {
                                      className={`${item.amount < 2 ? `bg-[#d3d3d3]` : 'bg-[#3b5998]'} p-3 rounded text-white`} />
                   </button>
                   {item.amount}
-                  <button onClick={() => handleIncrement(item)} disabled={calculateTotal(cart) >= user.points}>
+                  <button onClick={() => handleIncrement(item)} disabled={calculateTotal(bookCart) >= user.points}>
                     <FontAwesomeIcon icon={faPlus}
-                                     className={`${calculateTotal(cart) >= user.points ? `bg-[#d3d3d3]` : 'bg-[#3b5998]'} p-3 rounded text-white`} />
+                                     className={`${calculateTotal(bookCart) >= user.points ? `bg-[#d3d3d3]` : 'bg-[#3b5998]'} p-3 rounded text-white`} />
                   </button>
                   <button onClick={() => handleRemoveItem(item)}>
                     <FontAwesomeIcon
