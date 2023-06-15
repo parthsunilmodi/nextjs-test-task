@@ -4,7 +4,8 @@ import request from "axios";
 
 interface IPagination {
   page: number;
-  limit: number
+  limit: number;
+  searchText:string;
 }
 
 interface ICartProduct {
@@ -19,10 +20,10 @@ interface ICartProduct {
 
 export const fetchProduct = createAsyncThunk(
   '/fetchProduct',
-  async ({page, limit}: IPagination) => {
+  async ({page, limit, searchText = ''}: IPagination) => {
     try {
-      const response = await axiosInstance.get(`/books?page=${page}&limit=${limit}`);
-      return response.data
+      const response = await axiosInstance.get(`/books?page=${page}&limit=${limit}&search=${searchText}`);
+      return { data : response.data, page: page }
     } catch (e) {
       if (request.isAxiosError(e) && e.response) {
         throw new Error(e.response.data.message)
