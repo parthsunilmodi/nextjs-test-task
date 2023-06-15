@@ -72,7 +72,7 @@ const NavBar = () => {
                 </Link>
               </li>
               <li>
-                <Link className="md:p-4 py-3 px-0 flex items-center" href="/order">
+                <div className="md:p-4 py-3 px-0 flex items-center cursor-pointer">
                   <FontAwesomeIcon
                     className="mr-2 w-[20px] h-[30px]"
                     icon={faUser}
@@ -82,7 +82,7 @@ const NavBar = () => {
                   <span className="inline md:flex justify-center items-center text-xl text-white text-xs">
                     Points: {user.points}
                   </span>
-                </Link>
+                </div>
               </li>
               <li>
                 <Link className="md:p-4 py-3 px-0 flex items-center" href="/login" onClick={handleLogOut}>

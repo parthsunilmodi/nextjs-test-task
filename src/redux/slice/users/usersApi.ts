@@ -1,6 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import axiosInstance from '../../axiosInstance';
 import request from 'axios';
+import axiosInstance from '../../axiosInstance';
 import { setToast } from '../toast/toastSlice';
 
 

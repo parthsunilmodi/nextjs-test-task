@@ -1,14 +1,13 @@
 'use client';
 import React, { useEffect, useState } from 'react';
+import InfiniteScroll from 'react-infinite-scroll-component';
 import Link from 'next/link';
 import Image from 'next/image';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
-import { cancelOrder, getOrder } from '../../redux/slice/product/productApi';
-import { getUser } from '../../redux/slice/users/usersApi';
-import InfiniteScroll from 'react-infinite-scroll-component';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Spinner from '../components/spinner';
+import { cancelOrder, getOrder } from '../../redux/slice/product/productApi';
+import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 
 const Order = () => {
   const dispatch = useAppDispatch();
@@ -17,7 +16,7 @@ const Order = () => {
 
   const [page, setPage] = useState(1);
   const [orders, setOrders] = useState<any[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   const handleCancelOrder = (id: string) => {
     dispatch(cancelOrder(id));
@@ -42,14 +41,11 @@ const Order = () => {
 
   return (
     <div className="bg-[#dfe3ee] sm:p-10" style={{ minHeight: '150px' }}>
-      <Link href={'/'} className="flex content-center mb-8 text-indigo-800">
+      <Link href={'/'} className="flex content-center mb-8 text-indigo-800 m-[10px] 2xl:m-0">
         <FontAwesomeIcon className="mt-2 mr-2" icon={faArrowLeft} size="lg" />
         <span className="font-bold text-2xl">Back</span>
       </Link>
-      <h1 className="text-indigo-800 text-5xl font-bold mb-8">My Order</h1>
-      {order.length === 0 ? (
-        !loading && <h3 className="text-gray-500 p-4 text-lg font-bold">There is no order</h3>
-      ) : (
+      <h1 className="text-indigo-800 m-[10px] text-xl 2xl:m-0 2xl:text-5xl font-bold mb-8">My Order</h1>
         <InfiniteScroll
           next={getOrders}
           hasMore={hasMore}
@@ -57,7 +53,7 @@ const Order = () => {
           dataLength={order?.length}
           scrollThreshold={0.80}
         >
-          <div>
+          <div className="m-[10px] 2xl:m-0">
             {order.length > 0 && order?.map(({ books, _id, total, isCancel }: any, index: number) => (
               <div
                 className="w-full bg-white flex flex-col p-4 mb-4 rounded shadow-md border-2"
@@ -99,8 +95,11 @@ const Order = () => {
             ))}
           </div>
         </InfiniteScroll>
+      {isLoading && (
+        <div className="flex items-center justify-center my-[256px] mx-auto">
+          <Spinner />
+        </div>
       )}
-      {loading && <Spinner />}
     </div>
   );
 };
