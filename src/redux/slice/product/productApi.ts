@@ -89,13 +89,12 @@ export const orderCheckout = createAsyncThunk(
   },
 );
 
-
 export const getOrder = createAsyncThunk(
   '/getOrder',
   async ({page, limit}: IPagination) => {
     try {
       const response = await axiosInstance.get(`/orders?page=${page}&limit=${limit}`);
-      return response.data
+      return { data : response.data, page: page }
     } catch (e) {
       if (request.isAxiosError(e) && e.response) {
         throw new Error(e.response.data.message)

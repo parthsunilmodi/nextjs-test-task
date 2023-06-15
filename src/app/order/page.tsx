@@ -54,7 +54,7 @@ const Order = () => {
           scrollThreshold={0.80}
         >
           <div className="m-[10px] 2xl:m-0">
-            {order.length > 0 && order?.map(({ books, _id, total, isCancel }: any, index: number) => (
+            {order?.map(({ books, _id, total, isCancel }: any, index: number) => (
               <div
                 className="w-full bg-white flex flex-col p-4 mb-4 rounded shadow-md border-2"
                 key={index}

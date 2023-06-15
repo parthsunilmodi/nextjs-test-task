@@ -128,7 +128,8 @@ export const productSlice = createSlice({
       state.loading = true;
     });
     builder.addCase(getOrder.fulfilled, (state:any, action) => {
-      state.order = action.payload;
+      const { page , data= [] } = action.payload;
+      state.order = data && page !== 1 ? [...state.order, ...data] : (data && page === 1) ? data : state.order;
       state.loading = false;
       state.hasMore = !!action.payload
     });
