@@ -6,7 +6,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { cancelOrder, getOrder } from '../../redux/slice/product/productApi';
-import { getUser } from '../../redux/slice/users/usersApi';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import Spinner from '../components/spinner';
 
@@ -42,11 +41,11 @@ const Order = () => {
 
   return (
     <div className="bg-[#dfe3ee] sm:p-10" style={{ minHeight: '150px' }}>
-      <Link href={'/'} className="flex content-center mb-8 text-indigo-800">
+      <Link href={'/'} className="flex content-center mb-8 text-[#3b5998]">
         <FontAwesomeIcon className="mt-2 mr-2" icon={faArrowLeft} size="lg" />
         <span className="font-bold text-2xl">Back</span>
       </Link>
-      <h1 className="text-indigo-800 text-5xl font-bold mb-8">My Order</h1>
+      <h1 className="text-[#3b5998] text-5xl font-bold mb-8">My Order</h1>
       {order.length === 0 ? (
         !loading && <h3 className="text-gray-500 p-4 text-lg font-bold">There is no order</h3>
       ) : (
@@ -100,7 +99,7 @@ const Order = () => {
           </div>
         </InfiniteScroll>
       )}
-      {loading && <Spinner />}
+      {isLoading && <Spinner />}
     </div>
   );
 };

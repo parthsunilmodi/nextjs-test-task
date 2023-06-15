@@ -35,7 +35,7 @@ const SignUp = () => {
       if (values) {
         const response: any = await dispatch(signUpUser(values));
         if (response.payload.status === 200 || 201) {
-          router.push('/');
+          router.push('/login');
         }
       }
       resetForm();

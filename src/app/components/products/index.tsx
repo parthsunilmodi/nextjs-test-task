@@ -60,8 +60,8 @@ const ProductList = () => {
       <div className="flex w-[100%] justify-center bg-[#dfe3ee] h-[calc(100vh - 120px)]">
         <div className="flex flex-col justify-center gap-2 mt-[68px] w-full md:px-28">
           <FilterSection />
-          <div className="product flex flex-col sm:flex-row flex-wrap mb-10 my-10 gap-[32px] justify-center">
-            {products?.map((item: IProduct) => (
+          <div className="product flex flex-col sm:flex-row flex-wrap mb-10 my-10 justify-center gap-[32px]">
+            {product?.map((item: IProduct) => (
               <Product
                 key={item._id}
                 product={item}
