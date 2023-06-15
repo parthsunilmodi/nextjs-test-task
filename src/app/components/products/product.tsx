@@ -1,12 +1,12 @@
 'use client';
 import React, { memo } from 'react';
 import Image from 'next/image';
-import { useAppDispatch, useAppSelector } from '../../../redux/hooks';
 import { useRouter } from 'next/navigation';
+import { useAppDispatch, useAppSelector } from '../../../redux/hooks';
 import { addProductToCart } from '../../../redux/slice/product/productApi';
-import { faShoppingCart } from '@fortawesome/free-solid-svg-icons';
+import { setToast } from "../../../redux/slice/toast/toastSlice";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {setToast} from "../../../redux/slice/toast/toastSlice";
+import { faShoppingCart } from '@fortawesome/free-solid-svg-icons';
 
 interface IProduct {
   _id: string;

@@ -14,7 +14,6 @@ import './navbar.css';
 
 const NavBar = () => {
   const { user } = useAppSelector((state) => state.user);
-  // const { cart } = useAppSelector((state) => state.product);
   const dispatch = useAppDispatch();
   const cart = localStorage.getItem('cart') || [];
 

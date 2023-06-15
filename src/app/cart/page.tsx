@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import { faArrowLeft, faMinusCircle, faPlus, faMinus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
@@ -11,7 +12,6 @@ import {
   orderCheckout,
   removeProductFromCart
 } from '../../redux/slice/product/productApi';
-import { useRouter } from 'next/navigation';
 import Spinner from '../components/spinner';
 
 interface ICart {
@@ -114,7 +114,7 @@ const [bookCart, setBookCart] = useState<ICart>([]);
                     <span className="text-2xl">{(item.amount * item.points)}</span>
                   </div>
                 </div>
-                <div className="flex items-center justify-evenly md:items-start md:justify-start p-2 2xl:w-[20%] gap-2 border-1 rounded-lg h-14">
+                <div className="flex items-center justify-evenly md:items-start md:justify-start 2xl:items-center p-2 2xl:w-[20%] gap-2 border-1 rounded-lg h-14">
                   <button onClick={() => handleDecrease(item)} disabled={item.amount < 2}>
                     <FontAwesomeIcon icon={faMinus} className={`${item.amount < 2 ? `bg-[#d3d3d3]` : 'bg-[#3b5998]'} p-3 rounded text-white`} />
                   </button>
