@@ -44,9 +44,9 @@ const Order = () => {
     <div className="bg-[#dfe3ee] sm:p-10" style={{ minHeight: '150px' }}>
       <Link href={'/'} className="flex content-center mb-8 text-[#3b5998] m-[10px] 2xl:m-0">
         <FontAwesomeIcon className="mt-2 mr-2" icon={faArrowLeft} size="lg" />
-        <span className="font-bold text-2xl">Back</span>
+        <span className="font-bold text-xl">Back</span>
       </Link>
-      <h1 className="text-[#3b5998] m-[10px] text-2xl 2xl:text-5xl font-bold mb-8">My Order</h1>
+      <h1 className="text-[#3b5998] m-[10px] text-2xl 2xl:text-3xl font-bold mb-8"> ORDER HISTORY </h1>
         <InfiniteScroll
           next={getOrders}
           hasMore={hasMore}

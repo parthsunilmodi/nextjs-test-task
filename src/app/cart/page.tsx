@@ -96,12 +96,16 @@ const Cart = () => {
       >
         <Link href="/" className="flex content-center mb-8 text-[#3b5998]">
           <FontAwesomeIcon className="mt-2 mr-2" icon={faArrowLeft} size="lg" />
-          <span className="font-bold text-2xl">Back</span>
+          <span className="font-bold text-xl">Back</span>
         </Link>
-        <h1 className="text-xl 2xl:text-5xl font-bold mb-8 text-[#3b5998]">Shopping Cart</h1>
+        <h1 className="text-xl 2xl:text-3xl font-bold mb-8 text-[#3b5998]">Shopping Cart</h1>
 
         {bookCart.length === 0 ? (
-          <h3 className="text-gray-500 text-lg font-bold"> NO DATA IN CART ! </h3>
+          <>
+            <div className="flex justify-center items-center">
+              <p className="text-4xl text-[#f5425a] font-semibold my-[180px] mx-auto"> NO DATA IN CART ! </p>
+            </div>
+          </>
         ) : (
           <div>
             <h2 className="mb-2 2xl:mb-16 text-xl 2xl:text-4xl font-bold w-full text-right">
@@ -124,13 +128,17 @@ const Cart = () => {
                 <div
                   className="flex items-center justify-evenly md:items-start md:justify-start 2xl:items-center p-2 2xl:w-[20%] gap-2 border-1 rounded-lg h-14">
                   <button onClick={() => handleDecrease(item)} disabled={item.amount < 2}>
-                    <FontAwesomeIcon icon={faMinus}
-                                     className={`${item.amount < 2 ? `bg-[#d3d3d3]` : 'bg-[#3b5998]'} p-3 rounded text-white`} />
+                    <FontAwesomeIcon
+                      icon={faMinus}
+                      className={`${item.amount < 2 ? `bg-[#d3d3d3]` : 'bg-[#3b5998]'} p-3 rounded text-white`}
+                    />
                   </button>
                   {item.amount}
                   <button onClick={() => handleIncrement(item)} disabled={calculateTotal(bookCart) >= user.points}>
-                    <FontAwesomeIcon icon={faPlus}
-                                     className={`${calculateTotal(bookCart) >= user.points ? `bg-[#d3d3d3]` : 'bg-[#3b5998]'} p-3 rounded text-white`} />
+                    <FontAwesomeIcon
+                      icon={faPlus}
+                      className={`${calculateTotal(bookCart) >= user.points ? `bg-[#d3d3d3]` : 'bg-[#3b5998]'} p-3 rounded text-white`}
+                    />
                   </button>
                   <button onClick={() => handleRemoveItem(item)}>
                     <FontAwesomeIcon

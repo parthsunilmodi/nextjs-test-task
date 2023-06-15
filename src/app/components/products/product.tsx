@@ -1,5 +1,5 @@
 'use client';
-import React, { memo } from 'react';
+import React, { memo, useState } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useAppDispatch, useAppSelector } from '../../../redux/hooks';
@@ -18,7 +18,6 @@ interface ICart {
   amount: number;
 }
 
-
 interface IProduct {
   _id: string;
   title: string;
@@ -36,14 +35,19 @@ const Product = memo(
     const dispatch = useAppDispatch();
     const storedCart :ICart[] = JSON.parse(localStorage.getItem('cart') || '[]') || cart;
 
+    const [isLoading, setIsLoading] = useState(false);
+
     const handleAddToCart = async () => {
+      setIsLoading(true);
       if (calculateTotal(storedCart) >= user.points) {
         dispatch(setToast({ visible: true, message: `You don't have enough points to buy the product`, type: 'error' }));
         return null;
       }
       if (isCart(product) > 0) {
+        setIsLoading(false);
         navigate.push('/cart');
       } else {
+        setIsLoading(false);
         await dispatch(addProductToCart({ ...product, amount: 1 }));
         navigate.push('/cart');
       }
@@ -85,6 +89,7 @@ const Product = memo(
             className="add-cart-wrapper w-full text-white bg-[#3b5998] p-2 flex justify-center rounded-lg mt-3 text-center cursor-pointer"
             onClick={handleAddToCart}
           >
+            {isLoading && <div className="loader" />}
             <FontAwesomeIcon
               className="mr-2 w-[20px] h-[30px]"
               icon={faShoppingCart}
