@@ -1,7 +1,6 @@
 'use client';
-import React, { useEffect } from 'react';
-import { NextPage } from 'next';
-import { redirect } from 'next/navigation';
+import React, { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { getUser } from '../../redux/slice/users/usersApi';
 import { useAppDispatch } from '../../redux/hooks';
 
@@ -10,30 +9,36 @@ interface IWithAuth {
   isProtected: boolean;
 }
 
-const WithAuth: NextPage<IWithAuth> = ({ children, isProtected }) => {
+const WithAuth: React.FC<IWithAuth> = ({ children, isProtected }) => {
+  const router = useRouter();
   const dispatch = useAppDispatch();
   const token: string | null = localStorage.getItem('authToken');
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
 
   useEffect(() => {
-    if (token) {
+    if (token && !isLoggedIn) {
+      setIsLoggedIn(true);
+    }
+  }, [isLoggedIn, token]);
+
+  useEffect(() => {
+    if (isLoggedIn) {
       dispatch(getUser());
     }
-  }, [dispatch, token]);
+  }, [dispatch, isLoggedIn]);
 
   if (typeof window === 'undefined') {
     return <div />;
   }
 
   if (!token && isProtected) {
-    redirect('/login');
-    return;
+    router.push('/login');
+    return null;
   } else if (token && !isProtected) {
-    redirect('/');
-    return;
-  } else if (token && isProtected) {
-    return children;
+    router.push('/');
+    return null;
   } else {
-    return children;
+    return <>{children}</>;
   }
 };
 

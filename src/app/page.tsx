@@ -1,5 +1,5 @@
 'use client';
-import React, { useState } from 'react';
+import React from 'react';
 import NavBar from '../app/components/nav-bar';
 import ProductList from '../app/components/products/index';
 import WithAuth from '../components/Auth';

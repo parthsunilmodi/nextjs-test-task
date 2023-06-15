@@ -33,7 +33,7 @@ const Login: NextPage = () => {
     onSubmit: async (values: IBookFormValues, { resetForm }) => {
       if (values) {
         const response: any = await dispatch(loginUser(values));
-        if (response.payload.status === 200 || 201) {
+        if (response.type === 'auth/signin/fulfilled') {
           router.push('/');
         }
       }
