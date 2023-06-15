@@ -59,6 +59,9 @@ const NavBar = () => {
                     color="white"
                     size="lg"
                   />
+                  <span className="inline md:flex justify-center items-center text-xl text-white text-xs">
+                    Cart
+                  </span>
                   {
                     !!cart.length && (
                       <span className="point-badge">

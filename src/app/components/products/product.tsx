@@ -82,7 +82,7 @@ const Product = memo(
             </div>
             <div>
               <span className="p-2 text-4xl text-[#3b5998] font-bold">{product.points}</span>
-              <p className="text-xs text-[#d0d0d0]">Points</p>
+              <p className="text-xs text-[#9DB2BF]">Points</p>
             </div>
           </div>
           <div
