@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useAppDispatch, useAppSelector } from '@/redux/hooks';
+import { useAppDispatch } from '@/redux/hooks';
 import { setSearchText } from '@/redux/slice/product/productSlice';
 import useDebounce from '../../../components/debounce/useDebounce';
 
@@ -9,7 +9,7 @@ interface IProductList {
 
 const FilterSection = () => {
   const dispatch = useAppDispatch();
-  const [ search, setSearch ] = useState('');
+  const [search, setSearch] = useState('');
 
   useDebounce(() => {
       dispatch(setSearchText(search || ''))
