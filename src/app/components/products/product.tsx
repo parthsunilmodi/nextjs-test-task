@@ -1,10 +1,23 @@
-"use client";
+'use client';
 import React, { memo } from 'react';
 import Image from 'next/image';
-import loginBg from "../../../assets/img/sign-up.jpeg";
-import {useAppDispatch, useAppSelector} from "../../../redux/hooks";
-import {useRouter} from "next/navigation";
-import {addProductToCart} from "../../../redux/slice/product/productApi";
+import { useRouter } from 'next/navigation';
+import { useAppDispatch, useAppSelector } from '../../../redux/hooks';
+import { addProductToCart } from '../../../redux/slice/product/productApi';
+import { setToast } from "../../../redux/slice/toast/toastSlice";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faShoppingCart } from '@fortawesome/free-solid-svg-icons';
+
+interface ICart {
+  _id: string;
+  title: string;
+  writer: string;
+  tag: string;
+  coverImage: string;
+  points: number;
+  amount: number;
+}
+
 
 interface IProduct {
   _id: string;
@@ -16,34 +29,39 @@ interface IProduct {
 }
 
 const Product = memo(
-  ({product}: any) => {
-    const { cart } = useAppSelector((state) => state.product)
-    const { user } = useAppSelector((state) => state.user)
+  ({ product }: any) => {
+    const { cart } = useAppSelector((state) => state.product);
+    const { user } = useAppSelector((state) => state.user);
     const navigate = useRouter();
     const dispatch = useAppDispatch();
-    
+    const storedCart :ICart[] = JSON.parse(localStorage.getItem('cart') || '[]') || cart;
+
     const handleAddToCart = async () => {
-      if(isCart(product) > 0) {
-        navigate.push('/cart')
+      if (calculateTotal(storedCart) >= user.points) {
+        dispatch(setToast({ visible: true, message: `You don't have enough points to buy the product`, type: 'error' }));
+        return null;
+      }
+      if (isCart(product) > 0) {
+        navigate.push('/cart');
       } else {
-        await dispatch(addProductToCart({...product, amount: 1}));
-        navigate.push('/cart')
+        await dispatch(addProductToCart({ ...product, amount: 1 }));
+        navigate.push('/cart');
       }
     };
-  
+
     const isCart = (item: IProduct) => {
-      return cart?.filter((pro: { _id: string; }) => pro._id === item._id).length
+      return storedCart?.filter((pro: { _id: string; }) => pro._id === item._id).length;
     };
-    
-    const calculateTotal = (items) =>
-      items.reduce((acc, item) => acc + item.amount * item.points, 0);
-    
+
+    const calculateTotal = (items:ICart[]) =>
+      items.reduce((acc:number, item:ICart) => acc + item.amount * item.points, 0);
+
     return (
-	    <div
-		    className="w-72 bg-white shadow-md rounded-xl duration-500 hover:scale-105 hover:shadow-xl"
-		    key={product._id}
-	    >
-        <div className="flex justify-center mt-5">
+      <div
+        className="product-item bg-white shadow-md rounded-xl duration-500 hover:scale-105 hover:shadow-xl"
+        key={product._id}
+      >
+        <div className="w-[100%]">
           <Image
             src={product.coverImage}
             alt="Picture of the author"
@@ -51,33 +69,36 @@ const Product = memo(
             height={222}
           />
         </div>
-		    <div className="px-4 py-3 w-72">
-			    <span className="text-gray-400 mr-3 uppercase text-xs">Brand</span>
-			    <p className="text-lg font-bold text-black truncate block capitalize">{product.title}</p>
-			    <p className="text-lg font-bold text-black truncate block capitalize">{product.writer}</p>
-			    <div className="w-full text-white bg-[#8b9dc3] p-4 flex justify-between content-center rounded-lg">
-            {
-              isCart(product) > 0 ?
-                <button
-                  className="border-white font-bold border-2 px-4 rounded-full hover:bg-white hover:text-indigo-900"
-                  onClick={() => handleAddToCart()}
-                >
-                  Go to Cart
-                </button>
-                : <button
-                  className="border-white font-bold border-2 px-4 rounded-full hover:bg-white hover:text-indigo-900"
-                  onClick={() => handleAddToCart()}
-                  disabled={(calculateTotal(cart) >= user.points)}
-                >
-                  Add to Cart
-                </button>
-            }
-				    <span className="p-2 text-xl">Points: {product.points}</span>
-			    </div>
-		    </div>
-	    </div>
+        <span className="tag text-gray-400 mr-3 capitalize text-xs">{product.tag}</span>
+        <div className="px-4 pb-3 w-[100%]">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-lg font-bold text-black truncate block capitalize">{product.title}</p>
+              <p className="text-sm font-bold text-black truncate block capitalize">{product.writer}</p>
+            </div>
+            <div>
+              <span className="p-2 text-4xl text-[#3b5998] font-bold">{product.points}</span>
+              <p className="text-xs text-[#d0d0d0]">Points</p>
+            </div>
+          </div>
+          <div
+            className="add-cart-wrapper w-full text-white bg-[#3b5998] p-2 flex justify-center rounded-lg mt-3 text-center cursor-pointer"
+            onClick={handleAddToCart}
+          >
+            <FontAwesomeIcon
+              className="mr-2 w-[20px] h-[30px]"
+              icon={faShoppingCart}
+              color="white"
+              size="lg"
+            />
+            Add to Cart
+          </div>
+        </div>
+      </div>
     );
   }
 );
+
+Product.displayName = 'Product';
 
 export default Product;

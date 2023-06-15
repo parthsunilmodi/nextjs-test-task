@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import {
-  addProductToCart,
+  addProductToCart, cancelOrder,
   decreaseProduct,
   fetchProduct,
   getOrder,
@@ -8,6 +8,7 @@ import {
   orderCheckout,
   removeProductFromCart
 } from './productApi';
+import {array} from "yup";
 
 interface IProduct {
   _id: string;
@@ -36,6 +37,7 @@ type ProductState = {
   cart: ICart[],
   orderSuccess: boolean,
   order: any
+  searchText: string;
 };
 
 const initialState: ProductState = {
@@ -45,20 +47,27 @@ const initialState: ProductState = {
   error: '',
   hasMore: true,
   orderSuccess: false,
-  order: []
+  order: [],
+  searchText : ''
 };
 
 export const productSlice = createSlice({
   name: 'product',
   initialState,
-  reducers: {},
+  reducers: {
+     setSearchText : (state,action)=>{
+        state.searchText = action.payload;
+     }
+  },
   extraReducers: (builder) => {
     builder.addCase(fetchProduct.pending, (state, action) => {
       state.loading = true;
     });
     builder.addCase(fetchProduct.fulfilled, (state, action) => {
+      // @ts-ignore
+      const { page , data= [] } = action.payload;
       state.loading = false;
-      state.products = action.payload;
+      state.products = data && page !== 1 ? [...state.products, ...data] : (data && page === 1) ? data :state.products;
       state.hasMore = !!action.payload
     });
     builder.addCase(fetchProduct.rejected, (state, action) => {
@@ -70,6 +79,8 @@ export const productSlice = createSlice({
     });
     builder.addCase(addProductToCart.fulfilled, (state:any, action) => {
       state.cart = [action.payload, ...state.cart];
+      const cartItem =JSON.parse(localStorage.getItem('cart') || '[]');
+      localStorage.setItem('cart', JSON.stringify([action.payload, ...cartItem]));
       state.loading = false;
     });
     builder.addCase(addProductToCart.rejected, (state, action) => {
@@ -82,6 +93,7 @@ export const productSlice = createSlice({
     builder.addCase(decreaseProduct.fulfilled, (state:any, action) => {
       state.loading = false;
       state.cart = action.payload;
+      localStorage.setItem('cart', JSON.stringify(action.payload));
     });
     builder.addCase(decreaseProduct.rejected, (state, action) => {
       state.loading = false;
@@ -93,6 +105,7 @@ export const productSlice = createSlice({
     builder.addCase(increaseProduct.fulfilled, (state:any, action) => {
       state.loading = false;
       state.cart = action.payload;
+      localStorage.setItem('cart', JSON.stringify(action.payload));
     });
     builder.addCase(increaseProduct.rejected, (state, action) => {
       state.loading = false;
@@ -102,6 +115,8 @@ export const productSlice = createSlice({
       state.loading = true;
     });
     builder.addCase(orderCheckout.fulfilled, (state:any, action) => {
+      state.cart = [];
+      localStorage.setItem('cart', JSON.stringify([]));
       state.orderSuccess = true;
       state.loading = false;
     });
@@ -115,6 +130,7 @@ export const productSlice = createSlice({
     builder.addCase(getOrder.fulfilled, (state:any, action) => {
       state.order = action.payload;
       state.loading = false;
+      state.hasMore = !!action.payload
     });
     builder.addCase(getOrder.rejected, (state, action) => {
       state.loading = false;
@@ -124,14 +140,30 @@ export const productSlice = createSlice({
       state.loading = true;
     });
     builder.addCase(removeProductFromCart.fulfilled, (state:any, action) => {
-      state.cart = state.cart.filter((item) => item._id !== action.payload._id);
+      const cartItem =JSON.parse(localStorage.getItem('cart') || '[]');
+      state.cart = cartItem.filter((item: ICart) => item._id !== action.payload._id);
+      localStorage.setItem('cart', JSON.stringify(state.cart));
       state.loading = false;
     });
     builder.addCase(removeProductFromCart.rejected, (state, action) => {
       state.loading = false;
       state.error = action.error.message
     });
+    builder.addCase(cancelOrder.pending, (state, action) => {
+      state.loading = true;
+    });
+    builder.addCase(cancelOrder.fulfilled, (state:any, action) => {
+      state.loading = false;
+      const index = state.order?.findIndex((item: any) => item._id === action.payload._id);
+      if (index !== -1) {
+        state.order[index] = action.payload;
+      }
+    });
+    builder.addCase(cancelOrder.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.error.message
+    });
   }
 });
-
+export const { setSearchText} = productSlice.actions
 export default productSlice.reducer;

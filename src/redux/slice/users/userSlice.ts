@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { getUser, loginUser, signUpUser } from './usersApi';
+import {getUser, loginUser, logOutUser, signUpUser} from './usersApi';
 
 type UserState = {
   name: string;
@@ -59,6 +59,19 @@ export const userSlice = createSlice({
     builder.addCase(getUser.rejected, (state, action) => {
       state.loading = false;
       state.error = action.error.message;
+    });
+    builder.addCase(logOutUser.pending, (state, action) => {
+      state.loading = true
+    });
+    builder.addCase(logOutUser.fulfilled, (state, action:any) => {
+      initialState
+    });
+    builder.addCase(logOutUser.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.error.message;
+    });
+    builder.addDefaultCase((state, action) => {
+      state.loading = false;
     });
   }
 });

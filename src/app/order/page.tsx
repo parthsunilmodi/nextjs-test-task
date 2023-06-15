@@ -1,64 +1,103 @@
-"use client";
-import React, {useEffect} from 'react';
+'use client';
+import React, { useEffect, useState } from 'react';
+import InfiniteScroll from 'react-infinite-scroll-component';
 import Link from 'next/link';
+import Image from 'next/image';
+import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import Spinner from '../components/spinner';
+import { cancelOrder, getOrder } from '../../redux/slice/product/productApi';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
-import {useAppDispatch, useAppSelector} from "../../redux/hooks";
-import {getOrder} from "../../redux/slice/product/productApi";
 
 const Order = () => {
-  const orderState = [];
   const dispatch = useAppDispatch();
-  const { order } = useAppSelector((state) => state.product)
+
+  const { order, hasMore } = useAppSelector((state) => state.product);
+
+  const [page, setPage] = useState(1);
+  const [orders, setOrders] = useState<any[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleCancelOrder = (id: string) => {
+    dispatch(cancelOrder(id));
+  };
+
   useEffect(() => {
-    dispatch(getOrder())
+    getOrders();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  
-  console.log(order)
-  
+
+  const getOrders = async () => {
+    setIsLoading(true);
+    await dispatch(getOrder({ page: page, limit: 10 }));
+    setPage(page + 1);
+    setIsLoading(false);
+  };
+
+  useEffect(() => {
+    setOrders([...orders, ...order]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [order]);
+
   return (
-    <div className="bg-white p-4 sm:p-10" style={{minHeight: "150px"}}>
-      <Link href="/" className="flex content-center mb-8 text-indigo-800">
-        <FontAwesomeIcon className="mt-2 mr-2" icon={faArrowLeft} size="lg"/>
+    <div className="bg-[#dfe3ee] sm:p-10" style={{ minHeight: '150px' }}>
+      <Link href={'/'} className="flex content-center mb-8 text-[#3b5998] m-[10px] 2xl:m-0">
+        <FontAwesomeIcon className="mt-2 mr-2" icon={faArrowLeft} size="lg" />
         <span className="font-bold text-2xl">Back</span>
       </Link>
-      <h1 className="text-indigo-800 text-5xl font-bold mb-8">My Order</h1>
-      {order.length === 0 ? (
-        <h3 className="text-gray-500 text-lg font-bold">There is no order</h3>
-      ) : (
-        <div>
-          { order.length > 0 && order?.map(({books, total, email, createAt}, index) => (
+      <h1 className="text-[#3b5998] m-[10px] text-2xl 2xl:text-5xl font-bold mb-8">My Order</h1>
+        <InfiniteScroll
+          next={getOrders}
+          hasMore={hasMore}
+          loader={false}
+          dataLength={order?.length}
+          scrollThreshold={0.80}
+        >
+          <div className="m-[10px] 2xl:m-0">
+            {order.length > 0 && order?.map(({ books, _id, total, isCancel }: any, index: number) => (
               <div
-                className="w-full flex flex-col p-8 mb-4 rounded shadow-lg"
+                className="w-full bg-white flex flex-col p-4 mb-4 rounded shadow-md border-2"
                 key={index}
               >
-                <div className="text-indigo-800 font-bold text-lg">
-                  {/*{createAt.toString()}*/}
-                </div>
-                <div className="w-full mb-8">
-                  <div className="text-gray-600 font-bold text-right text-3xl">
-                    $ {total}
+                <div className="w-full flex flex-col gap-2">
+                  {books.map((book: any) => {
+                    const { _id, title, points, quantity, coverImage } = book;
+                    return (
+                      <div
+                        className="flex justify-between items-center mb-1"
+                        key={_id}
+                      >
+                        <div className="text-indigo-800 font-bold text-2xl flex gap-2">
+                          <Image src={coverImage} height={30} width={30} alt="img" />
+                          {title}
+                        </div>
+                        <div>
+                          Points: <span className="font-bold text-2xl">{points}{' '}</span>x{' '}
+                          <span className="font-bold text-2xl">{quantity}</span>{' '}:Quality
+                        </div>
+                      </div>
+                    )
+                  })}
+                  <hr />
+                  <div className="text-right flex gap-5 items-center justify-end">
+                    Total : <span className="text-gray-600 font-bold text-right text-2xl"> {total} </span>
+                    {!isCancel && (
+                      <button
+                        className="bg-[#FF0000] p-2 rounded text-white"
+                        onClick={() => handleCancelOrder(_id)}
+                      >
+                        Cancel Order
+                      </button>
+                    )}
                   </div>
-                  <div className="text-gray-600 text-right">{email}</div>
-                </div>
-                <div className="w-full">
-                  {books.map(({id, title, price, qty}) => (
-                    <div
-                      className="flex justify-between items-center mb-1"
-                      key={id}
-                    >
-                      <div className="text-indigo-800 font-bold text-2xl">
-                        {title}
-                      </div>
-                      <div>
-                        <span className="font-bold text-2xl">$ {price}</span> x{" "}
-                        <span className="font-bold text-2xl">{qty}</span>
-                      </div>
-                    </div>
-                  ))}
                 </div>
               </div>
             ))}
+          </div>
+        </InfiniteScroll>
+      {isLoading && (
+        <div className="flex items-center justify-center my-[256px] mx-auto">
+          <Spinner />
         </div>
       )}
     </div>

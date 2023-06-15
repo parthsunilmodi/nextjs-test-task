@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
-import { fetchProduct } from "../../../redux/slice/product/productApi";
-import FilterSection from "../filterSection";
-import InfiniteScroll from "react-infinite-scroll-component";
+import { useAppDispatch, useAppSelector } from '../../../redux/hooks';
+import { fetchProduct } from '../../../redux/slice/product/productApi';
+import FilterSection from '../filterSection';
+import InfiniteScroll from 'react-infinite-scroll-component';
 import Product from './product';
-import Spinner from "../spinner";
-import { useSelector } from "react-redux";
+import './product.css';
 
 interface IProduct {
   _id: string;
@@ -16,65 +15,51 @@ interface IProduct {
   points: number;
 }
 
-interface ICart {
-  _id: string;
-  title: string;
-  writer: string;
-  tag: string;
-  coverImage: string;
-  points: number;
-  amount: number;
-}
-
 interface IProductList {
   products: IProduct[],
   loading: boolean,
   error: string | undefined,
   hasMore: boolean
+  searchText : string
 }
 
 const ProductList = () => {
   const dispatch = useAppDispatch();
-  const [ page, setPage ] = useState(1);
-  const [ product, setProduct ] = useState<any>([]);
-  const {products, hasMore, loading}: IProductList = useAppSelector((state) => state.product);
+  const [page, setPage] = useState(1);
+  const { products, hasMore, searchText }: IProductList = useAppSelector((state) => state.product);
 
   useEffect(() => {
     getBooks();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const getBooks = async() => {
-    await dispatch(fetchProduct({page: page, limit: 20}));
-    setPage(page + 1);
+  const getBooks = async () => {
+    await dispatch(fetchProduct({ page: page, limit: 20, searchText }));
+    setPage((prevState) => prevState + 1);
   };
 
-  useEffect(() => {
-    setProduct([ ...product, ...products ])
-  }, [ products ]);
+  useEffect(()=>{
+    setPage(2);
+    dispatch(fetchProduct({ page: 1, limit: 20, searchText }));
+  },[searchText]);
 
-  // @ts-ignore
   return (
-    <InfiniteScroll next={async() => {
-      await getBooks()
-    }} hasMore={hasMore} loader={loading} dataLength={product?.length} scrollThreshold={0.80}>
-      {loading ? <Spinner/> : null}
-      <div className="flex bg-[#dfe3ee] w-[100%] justify-center">
-        <div className="flex flex-col justify-center mt-[70px]">
-          <div className="">
-            <FilterSection/>
-          </div>
-          <div className="flex flex-col sm:flex-row flex-wrap mb-10 m-10 gap-[32px] justify-center">
-            {product?.map((item: IProduct) => (
+    <InfiniteScroll next={getBooks} hasMore={hasMore} loader={false} dataLength={products?.length} scrollThreshold={0.80}>
+      <div className="flex w-[100%] justify-center bg-[#dfe3ee]">
+        <div className="flex flex-col justify-center gap-2 mt-[68px] w-full">
+          <FilterSection />
+          <div className="product flex flex-col sm:flex-row flex-wrap mb-10 2xl:my-10 2xl:gap-[32px] justify-center">
+            {products?.map((item: IProduct) => (
               <Product
+                key={item._id}
                 product={item}
               />
             ))}
           </div>
         </div>
       </div>
-
     </InfiniteScroll>
-  )
+  );
 };
 
 export default ProductList;
