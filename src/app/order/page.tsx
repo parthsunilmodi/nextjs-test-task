@@ -45,7 +45,7 @@ const Order = () => {
         <FontAwesomeIcon className="mt-2 mr-2" icon={faArrowLeft} size="lg" />
         <span className="font-bold text-2xl">Back</span>
       </Link>
-      <h1 className="text-[#3b5998]  m-[10px] text-xl 2xl:m-0 2xl:text-5xl font-bold mb-8">My Order</h1>
+      <h1 className="text-[#3b5998] m-[10px] text-2xl 2xl:text-5xl font-bold mb-8">My Order</h1>
         <InfiniteScroll
           next={getOrders}
           hasMore={hasMore}
