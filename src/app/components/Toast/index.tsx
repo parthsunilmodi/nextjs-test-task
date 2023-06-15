@@ -1,51 +1,66 @@
 'use client';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useAppSelector, useAppDispatch } from '../../../redux/hooks';
 import { setToast } from '../../../redux/slice/toast/toastSlice';
 
-let timer: any = null;
-
 const Toast = () => {
   const dispatch = useAppDispatch();
-  const { visible, message, type } = useAppSelector((state) => state.toast);
+  const { visible, message, type } = useAppSelector(state => state.toast);
+  const [selectedType, setSelectedType] = useState<string>('');
 
   useEffect(() => {
-    timer = setTimeout(() => {
-      dispatch(setToast({ visible: false, message: '', type: '' }));
-    }, 4000);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [visible]);
+    let timer: NodeJS.Timeout | null = null;
+
+    if (visible) {
+      timer = setTimeout(() => {
+        dispatch(setToast({ visible: false, message: '', type: '' }));
+      }, 4000);
+    }
+
+    return () => {
+      if (timer) {
+        clearTimeout(timer);
+      }
+    };
+  }, [dispatch, visible]);
+
+  useEffect(() => {
+    getColor(type || '');
+  }, [type]);
 
   const onClose = () => {
     dispatch(setToast({ visible: false, message: '', type: '' }));
-    timer.clearTimeout();
+    clearTimeout(timer);
+  };
+
+  const getColor = (toastType: string) => {
+    switch (toastType) {
+      case 'warning':
+        setSelectedType('#f0ad4e');
+        break;
+      case 'error':
+        setSelectedType('#FF0000');
+        break;
+      case 'success':
+        setSelectedType('#4BB543');
+        break;
+      case 'info':
+        setSelectedType('#0a8fff');
+        break;
+      default:
+        setSelectedType('#FF0000');
+    }
   };
 
   if (!visible) {
     return null;
   }
-  
-  const getColor = (toastType :string) => {
-    switch (toastType) {
-      case 'warning':
-        return '#f0ad4e';
-      case 'error':
-        return '#FF0000';
-      case 'success':
-        debugger
-        return '#4BB543';
-      case 'info':
-        return '#0a8fff';
-      default :
-        return '#FFFFFF';
-    }
-  };
 
   return (
     <div
       id="toast-top-right"
-      style={{ zIndex: '11' }}
-      className={`fixed flex items-center justify-between w-[100%] max-w-xs p-4 space-x-4 shadow top-5 right-5 text-white text-xl font-bold dark:divide-gray-700 space-x bg-[${getColor(type)}]`}
+      className={`fixed flex items-center justify-between w-[100%] max-w-xs p-4 space-x-4 shadow top-5 right-5 text-white text-xl font-bold dark:divide-gray-700 space-x`}
+      style={{ backgroundColor: selectedType, zIndex: '11' }}
       role="alert"
     >
       <div className="text-sm font-normal">{message || 'asd'}</div>

@@ -1,6 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
 import axiosInstance from '../../axiosInstance'
 import request from "axios";
+import { setToast } from "../toast/toastSlice";
 
 interface IPagination {
   page: number;
@@ -73,9 +74,12 @@ export const increaseProduct = createAsyncThunk(
 
 export const orderCheckout = createAsyncThunk(
   '/orderCheckout',
-  async (data:any) => {
+  async (data:any, { dispatch }) => {
     try {
       const response = await axiosInstance.post(`/orders`, data);
+      if (!response.data.isCancel) {
+        dispatch(setToast({ visible: true, message: 'Order Placed Successfully !', type: 'success' }));
+      }
       return response.data;
     } catch (e) {
       if (request.isAxiosError(e) && e.response) {
@@ -116,9 +120,12 @@ export const removeProductFromCart = createAsyncThunk(
 
 export const cancelOrder = createAsyncThunk(
   '/cancelOrder',
-  async (data:string) => {
+  async (data:string, { dispatch }) => {
     try {
       const response = await axiosInstance.get(`/orders/cancel/${data}`);
+      if (response.data.isCancel) {
+        dispatch(setToast({ visible: true, message: 'Order Cancelled !', type: 'success' }));
+      }
       return response.data;
     } catch (e) {
       if (request.isAxiosError(e) && e.response) {

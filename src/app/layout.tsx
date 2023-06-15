@@ -1,9 +1,9 @@
 import React from 'react';
 import Providers from '@/redux/provider';
+import Toast from './components/Toast';
 import './globals.css';
 import 'tailwindcss/tailwind.css';
 import '@fortawesome/fontawesome-svg-core/styles.css';
-import Toast from './components/Toast';
 
 export const metadata = {
   title: 'Bookify store',
