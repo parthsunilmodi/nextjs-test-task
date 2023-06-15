@@ -15,16 +15,6 @@ interface IProduct {
   points: number;
 }
 
-interface ICart {
-  _id: string;
-  title: string;
-  writer: string;
-  tag: string;
-  coverImage: string;
-  points: number;
-  amount: number;
-}
-
 interface IProductList {
   products: IProduct[],
   loading: boolean,
@@ -49,9 +39,9 @@ const ProductList = () => {
   };
 
   useEffect(()=>{
-    setPage(2)
+    setPage(2);
     dispatch(fetchProduct({ page: 1, limit: 20, searchText }));
-  },[searchText])
+  },[searchText]);
 
   return (
     <InfiniteScroll next={async () => {
@@ -61,7 +51,7 @@ const ProductList = () => {
         <div className="flex flex-col justify-center gap-2 mt-[68px] w-full md:px-28">
           <FilterSection />
           <div className="product flex flex-col sm:flex-row flex-wrap mb-10 my-10 justify-center gap-[32px]">
-            {product?.map((item: IProduct) => (
+            {products?.map((item: IProduct) => (
               <Product
                 key={item._id}
                 product={item}
