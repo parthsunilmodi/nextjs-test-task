@@ -12,16 +12,17 @@ interface IWithAuth {
 
 const WithAuth: NextPage<IWithAuth> = ({ children, isProtected }) => {
   const dispatch = useAppDispatch();
+  const token: string | null = localStorage.getItem('authToken');
 
   useEffect(() => {
-    dispatch(getUser());
-  }, [dispatch]);
+    if (token) {
+      dispatch(getUser());
+    }
+  }, [dispatch, token]);
 
   if (typeof window === 'undefined') {
     return <div />;
   }
-
-  const token: string | null = localStorage.getItem('authToken');
 
   if (!token && isProtected) {
     redirect('/login');
