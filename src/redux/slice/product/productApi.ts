@@ -5,7 +5,7 @@ import request from "axios";
 interface IPagination {
   page: number;
   limit: number;
-  searchText:string;
+  searchText?:string;
 }
 
 interface ICartProduct {

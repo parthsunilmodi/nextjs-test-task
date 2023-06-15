@@ -8,6 +8,17 @@ import { setToast } from "../../../redux/slice/toast/toastSlice";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faShoppingCart } from '@fortawesome/free-solid-svg-icons';
 
+interface ICart {
+  _id: string;
+  title: string;
+  writer: string;
+  tag: string;
+  coverImage: string;
+  points: number;
+  amount: number;
+}
+
+
 interface IProduct {
   _id: string;
   title: string;
@@ -23,10 +34,10 @@ const Product = memo(
     const { user } = useAppSelector((state) => state.user);
     const navigate = useRouter();
     const dispatch = useAppDispatch();
-    const Storedcart = JSON.parse(localStorage.getItem('cart')) || cart;
+    const storedCart :ICart[] = JSON.parse(localStorage.getItem('cart') || '[]') || cart;
 
     const handleAddToCart = async () => {
-      if (calculateTotal(Storedcart) >= user.points) {
+      if (calculateTotal(storedCart) >= user.points) {
         dispatch(setToast({ visible: true, message: `You don't have enough points to buy the product`, type: 'error' }));
         return null;
       }
@@ -39,11 +50,11 @@ const Product = memo(
     };
 
     const isCart = (item: IProduct) => {
-      return Storedcart?.filter((pro: { _id: string; }) => pro._id === item._id).length;
+      return storedCart?.filter((pro: { _id: string; }) => pro._id === item._id).length;
     };
 
-    const calculateTotal = (items) =>
-      items.reduce((acc, item) => acc + item.amount * item.points, 0);
+    const calculateTotal = (items:ICart[]) =>
+      items.reduce((acc:number, item:ICart) => acc + item.amount * item.points, 0);
 
     return (
       <div

@@ -15,7 +15,7 @@ import './navbar.css';
 const NavBar = () => {
   const { user } = useAppSelector((state) => state.user);
   const dispatch = useAppDispatch();
-  const cart = localStorage.getItem('cart') || [];
+  const cart = JSON.parse(localStorage.getItem('cart') || '[]');
 
   const handleLogOut = () => {
     dispatch(logOutUser());
@@ -52,7 +52,7 @@ const NavBar = () => {
                   {
                     !!cart.length && (
                       <span className="point-badge">
-                        {JSON.parse(cart).length}
+                        {cart.length}
                       </span>
                     )
                   }
