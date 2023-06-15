@@ -27,7 +27,7 @@ const NavBar = () => {
         <div className="flex-1 flex justify-between items-center">
           <h1 className="leading-none text-2xl text-grey-darkest">
             <Link className="no-underline text-white text-4xl font-bold" href="/">
-              Book Store
+              Bookify store
             </Link>
           </h1>
         </div>
