@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import { addProductToCart } from '../../../redux/slice/product/productApi';
 import { faShoppingCart } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {setToast} from "../../../redux/slice/toast/toastSlice";
 
 interface IProduct {
   _id: string;
@@ -24,6 +25,10 @@ const Product = memo(
     const dispatch = useAppDispatch();
 
     const handleAddToCart = async () => {
+      if (calculateTotal(cart) >= user.points) {
+        dispatch(setToast({ visible: true, message: `You don't have enough points to buy the product`, type: 'error' }));
+        return null;
+      }
       if (isCart(product) > 0) {
         navigate.push('/cart');
       } else {
@@ -35,6 +40,9 @@ const Product = memo(
     const isCart = (item: IProduct) => {
       return cart?.filter((pro: { _id: string; }) => pro._id === item._id).length;
     };
+
+    const calculateTotal = (items) =>
+      items.reduce((acc, item) => acc + item.amount * item.points, 0);
 
     return (
       <div
@@ -63,7 +71,7 @@ const Product = memo(
           </div>
           <div
             className="add-cart-wrapper w-full text-white bg-[#3b5998] p-2 flex justify-center rounded-lg mt-3 text-center cursor-pointer"
-            onClick={() => handleAddToCart()}
+            onClick={handleAddToCart}
           >
             <FontAwesomeIcon
               className="mr-2 w-[20px] h-[30px]"
