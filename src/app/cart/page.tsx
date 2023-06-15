@@ -1,5 +1,5 @@
 'use client';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { faArrowLeft, faMinusCircle, faPlus, faMinus } from '@fortawesome/free-solid-svg-icons';
@@ -29,9 +29,14 @@ const Cart = () => {
   const { user } = useAppSelector((state) => state.user);
   const navigate = useRouter();
   const dispatch = useAppDispatch();
+const [bookCart, setBookCart] = useState<ICart>([]);
+  const cartStore = JSON?.parse(localStorage.getItem('cart')) || cart;
 
+  useEffect(() => {
+      setBookCart(cartStore);
+  },[cart]);
   const handleIncrement = (item: ICart) => {
-    const data = cart.map((product: any) => {
+    const data = bookCart.map((product: any) => {
       if (item._id === product._id) {
         return {
           ...product,
@@ -45,7 +50,7 @@ const Cart = () => {
   };
 
   const handleDecrease = (item: ICart) => {
-    const data = cart.map((product: any) => {
+    const data = bookCart.map((product: any) => {
       if (item._id === product._id) {
         return {
           ...product,
@@ -58,8 +63,9 @@ const Cart = () => {
     dispatch(decreaseProduct(data));
   };
 
+
   const handleCheckout = async () => {
-    const cartItems = cart.map((item: any) => {
+    const cartItems = bookCart.map((item: any) => {
       return { bookId: item._id, quantity: item.amount };
     });
     const response = await dispatch(orderCheckout({ books: cartItems }));
@@ -85,16 +91,16 @@ const Cart = () => {
           <FontAwesomeIcon className="mt-2 mr-2" icon={faArrowLeft} size="lg" />
           <span className="font-bold text-2xl">Back</span>
         </Link>
-        <h1 className="text-indigo-800 text-xl 2xl:text-5xl font-bold mb-8 text-[#3b5998]">Shopping Cart</h1>
+        <h1 className="text-xl 2xl:text-5xl font-bold mb-8 text-[#3b5998]">Shopping Cart</h1>
 
-        {cart.length === 0 ? (
+        {bookCart.length === 0 ? (
           <h3 className="text-gray-500 text-lg font-bold"> NO DATA IN CART ! </h3>
         ) : (
           <div>
             <h2 className="mb-2 2xl:mb-16 text-xl 2xl:text-4xl font-bold w-full text-right">
-              Total: {calculateTotal(cart).toFixed(2)}
+              Total: {calculateTotal(bookCart).toFixed(2)}
             </h2>
-            {cart?.map((item: ICart, id: string | number | null | undefined) => (
+            {bookCart?.map((item: ICart, id: string | number | null | undefined) => (
               <div
                 key={id}
                 className="bg-white relative w-full flex flex-col md:flex-row mb-4 rounded shadow-lg p-5 items-center"
@@ -104,8 +110,8 @@ const Cart = () => {
                   <h1 className="text-xl 2xl:text-5xl font-bold text-[#3b5998]">{item.title}</h1>
                   <div className="text-lg font-bold">
                     <span className="text-2xl">$ {item.points}</span> x{' '}
-                    <span className="text-2xl">{item.amount}</span>
-                    <span className="text-2xl">{(item.amount * item.points).toFixed(2)}</span>
+                    <span className="text-2xl">{item.amount}</span> = {' '}
+                    <span className="text-2xl">{(item.amount * item.points)}</span>
                   </div>
                 </div>
                 <div className="flex items-center justify-evenly md:items-start md:justify-start p-2 2xl:w-[20%] gap-2 border-1 rounded-lg h-14">
@@ -113,8 +119,9 @@ const Cart = () => {
                     <FontAwesomeIcon icon={faMinus} className={`${item.amount < 2 ? `bg-[#d3d3d3]` : 'bg-[#3b5998]'} p-3 rounded text-white`} />
                   </button>
                   {item.amount}
-                  <button onClick={() => handleIncrement(item)} disabled={calculateTotal(cart) >= user.points}>
-                    <FontAwesomeIcon icon={faPlus} className={`${calculateTotal(cart) >= user.points ? `bg-[#d3d3d3]` : 'bg-[#3b5998]'} p-3 rounded text-white`} />
+                  <button onClick={() => handleIncrement(item)} disabled={calculateTotal(bookCart) >= user.points}>
+                    <FontAwesomeIcon icon={faPlus}
+                                     className={`${calculateTotal(bookCart) >= user.points ? `bg-[#d3d3d3]` : 'bg-[#3b5998]'} p-3 rounded text-white`} />
                   </button>
                   <button onClick={() => handleRemoveItem(item)}>
                     <FontAwesomeIcon

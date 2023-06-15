@@ -24,12 +24,23 @@ const Toast = () => {
   if (!visible) {
     return null;
   }
+  
+  const getColor = (toastType :string) => {
+    switch (toastType) {
+      case 'warning':
+        return '#f0ad4e';
+      case 'error':
+        return '#FF0000';
+      case 'success':
+        return '#4BB543';
+    }
+  };
 
   return (
     <div
       id="toast-top-right"
       style={{ zIndex: '11' }}
-      className="fixed flex items-center justify-between w-[100%] max-w-xs p-4 space-x-4 shadow top-5 right-5 text-white text-xl font-bold dark:divide-gray-700 space-x bg-[#FF0000]"
+      className={`fixed flex items-center justify-between w-[100%] max-w-xs p-4 space-x-4 shadow top-5 right-5 text-white text-xl font-bold dark:divide-gray-700 space-x bg-[${getColor(type)}]`}
       role="alert"
     >
       <div className="text-sm font-normal">{message || 'asd'}</div>

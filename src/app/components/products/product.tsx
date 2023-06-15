@@ -23,9 +23,10 @@ const Product = memo(
     const { user } = useAppSelector((state) => state.user);
     const navigate = useRouter();
     const dispatch = useAppDispatch();
+    const Storedcart = JSON.parse(localStorage.getItem('cart')) || cart;
 
     const handleAddToCart = async () => {
-      if (calculateTotal(cart) >= user.points) {
+      if (calculateTotal(Storedcart) >= user.points) {
         dispatch(setToast({ visible: true, message: `You don't have enough points to buy the product`, type: 'error' }));
         return null;
       }
@@ -38,7 +39,7 @@ const Product = memo(
     };
 
     const isCart = (item: IProduct) => {
-      return cart?.filter((pro: { _id: string; }) => pro._id === item._id).length;
+      return Storedcart?.filter((pro: { _id: string; }) => pro._id === item._id).length;
     };
 
     const calculateTotal = (items) =>

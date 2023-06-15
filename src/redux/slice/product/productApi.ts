@@ -68,7 +68,6 @@ export const increaseProduct = createAsyncThunk(
         throw new Error(e.response.data.message)
       }
     }
-
   },
 );
 
@@ -119,7 +118,7 @@ export const cancelOrder = createAsyncThunk(
   '/cancelOrder',
   async (data:string) => {
     try {
-      const response = await axiosInstance.get(`/orders/${data}`);
+      const response = await axiosInstance.get(`/orders/cancel/${data}`);
       return response.data;
     } catch (e) {
       if (request.isAxiosError(e) && e.response) {
