@@ -36,9 +36,6 @@ const Product = memo(
       return cart?.filter((pro: { _id: string; }) => pro._id === item._id).length;
     };
 
-    const calculateTotal = (items) =>
-      items.reduce((acc, item) => acc + item.amount * item.points, 0);
-
     return (
       <div
         className="product-item bg-white shadow-md rounded-xl duration-500 hover:scale-105 hover:shadow-xl"
@@ -81,5 +78,7 @@ const Product = memo(
     );
   }
 );
+
+Product.displayName = 'Product';
 
 export default Product;

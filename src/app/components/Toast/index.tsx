@@ -3,7 +3,7 @@ import React, { useEffect } from 'react';
 import { useAppSelector, useAppDispatch } from '../../../redux/hooks';
 import { setToast } from '../../../redux/slice/toast/toastSlice';
 
-let timer = null;
+let timer: any = null;
 
 const Toast = () => {
   const dispatch = useAppDispatch();
@@ -15,6 +15,7 @@ const Toast = () => {
     timer = setTimeout(() => {
       dispatch(setToast({ visible: false, message: '', type: '' }));
     }, 4000);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [visible]);
 
   const onClose = () => {

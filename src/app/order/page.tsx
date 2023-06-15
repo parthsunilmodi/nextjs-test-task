@@ -16,7 +16,7 @@ const Order = () => {
   const { order, hasMore, loading } = useAppSelector((state) => state.product);
 
   const [page, setPage] = useState(1);
-  const [orders, setOrders] = useState([]);
+  const [orders, setOrders] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(false);
 
   const handleCancelOrder = (id: string) => {
@@ -25,6 +25,7 @@ const Order = () => {
 
   useEffect(() => {
     getOrders();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const getOrders = async () => {
@@ -36,6 +37,7 @@ const Order = () => {
 
   useEffect(() => {
     setOrders([...orders, ...order]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [order]);
 
   return (
@@ -48,31 +50,38 @@ const Order = () => {
       {order.length === 0 ? (
         !loading && <h3 className="text-gray-500 p-4 text-lg font-bold">There is no order</h3>
       ) : (
-        <InfiniteScroll next={async () => {
-          await getOrders();
-        }} hasMore={hasMore} loader={false} dataLength={order?.length} scrollThreshold={0.80}>
+        <InfiniteScroll
+          next={getOrders}
+          hasMore={hasMore}
+          loader={false}
+          dataLength={order?.length}
+          scrollThreshold={0.80}
+        >
           <div>
-            {order.length > 0 && order?.map(({ books, _id, total, isCancel }, index) => (
+            {order.length > 0 && order?.map(({ books, _id, total, isCancel }: any, index: number) => (
               <div
                 className="w-full bg-white flex flex-col p-4 mb-4 rounded shadow-md border-2"
                 key={index}
               >
                 <div className="w-full flex flex-col gap-2">
-                  {books.map(({ _id, title, points, quantity, coverImage }) => (
-                    <div
-                      className="flex justify-between items-center mb-1"
-                      key={_id}
-                    >
-                      <div className="text-indigo-800 font-bold text-2xl flex gap-2">
-                        <Image src={coverImage} height={30} width={30} alt="img" />
-                        {title}
+                  {books.map((book: any) => {
+                    const { _id, title, points, quantity, coverImage } = book;
+                    return (
+                      <div
+                        className="flex justify-between items-center mb-1"
+                        key={_id}
+                      >
+                        <div className="text-indigo-800 font-bold text-2xl flex gap-2">
+                          <Image src={coverImage} height={30} width={30} alt="img" />
+                          {title}
+                        </div>
+                        <div>
+                          Points: <span className="font-bold text-2xl">{points}{' '}</span>x{' '}
+                          <span className="font-bold text-2xl">{quantity}</span>{' '}:Quality
+                        </div>
                       </div>
-                      <div>
-                        Points: <span className="font-bold text-2xl">{points}{' '}</span>x{' '}
-                        <span className="font-bold text-2xl">{quantity}</span>{' '}:Quality
-                      </div>
-                    </div>
-                  ))}
+                    )
+                  })}
                   <hr />
                   <div className="text-right flex gap-5 items-center justify-end">
                     Total : <span className="text-gray-600 font-bold text-right text-2xl"> {total} </span>

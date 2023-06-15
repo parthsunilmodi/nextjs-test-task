@@ -17,11 +17,11 @@ const WithAuth = ({children} : any) => {
 		if (!tokens) {
 		  router.push("/login")
 		}
-	}, [tokens]);
+	}, [router, tokens]);
 
   useEffect(() => {
     dispatch(getUser())
-  },[]);
+  },[dispatch]);
 
 	if (!tokens) {
 		return null;

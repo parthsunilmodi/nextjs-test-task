@@ -126,7 +126,7 @@ export const productSlice = createSlice({
       state.loading = true;
     });
     builder.addCase(removeProductFromCart.fulfilled, (state:any, action) => {
-      state.cart = state.cart.filter((item) => item._id !== action.payload._id);
+      state.cart = state.cart.filter((item: ICart) => item._id !== action.payload._id);
       state.loading = false;
     });
     builder.addCase(removeProductFromCart.rejected, (state, action) => {
@@ -138,7 +138,7 @@ export const productSlice = createSlice({
     });
     builder.addCase(cancelOrder.fulfilled, (state:any, action) => {
       state.loading = false;
-      const index = state.order?.findIndex((item) => item._id === action.payload._id);
+      const index = state.order?.findIndex((item: any) => item._id === action.payload._id);
       if (index !== -1) {
         state.order[index] = action.payload;
       }

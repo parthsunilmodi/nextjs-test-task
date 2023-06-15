@@ -124,7 +124,7 @@ const Login: NextPage = () => {
                   </div>
                 </form>
                 <div className="mt-12 text-sm font-display font-semibold text-gray-700 text-center">
-                  Don't have an account ?
+                  Don&apos;t have an account ?
                   <Link
                     className="ml-2 cursor-pointer text-indigo-600 hover:text-indigo-800"
                     href="/sign-up"

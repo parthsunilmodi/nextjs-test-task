@@ -36,10 +36,11 @@ const ProductList = () => {
   const dispatch = useAppDispatch();
   const [page, setPage] = useState(1);
   const [product, setProduct] = useState<any>([]);
-  const { products, hasMore, loading }: IProductList = useAppSelector((state) => state.product);
+  const { products, hasMore }: IProductList = useAppSelector((state) => state.product);
 
   useEffect(() => {
     getBooks();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const getBooks = async () => {
@@ -49,6 +50,7 @@ const ProductList = () => {
 
   useEffect(() => {
     setProduct([...product, ...products]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [products]);
 
   return (
@@ -61,6 +63,7 @@ const ProductList = () => {
           <div className="product flex flex-col sm:flex-row flex-wrap mb-10 my-10 gap-[32px] justify-center">
             {product?.map((item: IProduct) => (
               <Product
+                key={item._id}
                 product={item}
               />
             ))}
