@@ -102,6 +102,7 @@ export const productSlice = createSlice({
       state.loading = true;
     });
     builder.addCase(orderCheckout.fulfilled, (state:any, action) => {
+      state.cart = [];
       state.orderSuccess = true;
       state.loading = false;
     });
@@ -137,13 +138,10 @@ export const productSlice = createSlice({
     });
     builder.addCase(cancelOrder.fulfilled, (state:any, action) => {
       state.loading = false;
-      state.order = state.order?.map((item) => {
-        if(item._id !== action.payload.data._id) {
-          return item = action.payload.data
-        } else {
-          return  item
-        }
-      })
+      const index = state.order?.findIndex((item) => item._id === action.payload._id);
+      if (index !== -1) {
+        state.order[index] = action.payload;
+      }
     });
     builder.addCase(cancelOrder.rejected, (state, action) => {
       state.loading = false;

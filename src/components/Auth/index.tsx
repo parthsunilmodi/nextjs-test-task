@@ -7,14 +7,18 @@ import { useAppDispatch } from "../../redux/hooks";
 const WithAuth = ({children} : any) => {
 	const router = useRouter();
 	const dispatch = useAppDispatch();
-	const tokens = localStorage.getItem('authToken');
+	let tokens: string | null = null;
+
+	if (typeof window !== "undefined") {
+		tokens = localStorage.getItem('authToken');
+	}
 
 	useEffect(() => {
 		if (!tokens) {
 		  router.push("/login")
 		}
 	}, [tokens]);
-  
+
   useEffect(() => {
     dispatch(getUser())
   },[]);

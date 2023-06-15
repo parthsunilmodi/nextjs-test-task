@@ -3,6 +3,7 @@ import Providers from '@/redux/provider';
 import './globals.css';
 import 'tailwindcss/tailwind.css';
 import '@fortawesome/fontawesome-svg-core/styles.css';
+import Toast from './components/Toast';
 
 export const metadata = {
   title: 'Create Next App',
@@ -14,6 +15,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en">
       <body className="bg-[#dfe3ee]">
         <Providers>
+          <Toast />
           {children}
         </Providers>
       </body>

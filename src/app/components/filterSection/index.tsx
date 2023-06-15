@@ -5,7 +5,7 @@ const FilterSection = () => {
 
   return (
     <>
-      <header className="w-full lg:px-16 px-8 flex flex-wrap items-center py-4">
+      <header className="w-full flex flex-wrap items-center pt-12">
         <div className="flex-1 flex justify-between items-center">
           <form className="b-4 w-full md:mb-0 md:w-1/3">
             <label className="hidden" htmlFor="search-form">Search</label>

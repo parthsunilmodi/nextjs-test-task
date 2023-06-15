@@ -70,6 +70,9 @@ export const userSlice = createSlice({
       state.loading = false;
       state.error = action.error.message;
     });
+    builder.addDefaultCase((state, action) => {
+      state.loading = false;
+    });
   }
 });
 

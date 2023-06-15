@@ -67,7 +67,7 @@ export const increaseProduct = createAsyncThunk(
         throw new Error(e.response.data.message)
       }
     }
-    
+
   },
 );
 
@@ -76,7 +76,7 @@ export const orderCheckout = createAsyncThunk(
   async (data:any) => {
     try {
       const response = await axiosInstance.post(`/orders`, data);
-      return response
+      return response.data;
     } catch (e) {
       if (request.isAxiosError(e) && e.response) {
         throw new Error(e.response.data.message)
@@ -119,7 +119,7 @@ export const cancelOrder = createAsyncThunk(
   async (data:string) => {
     try {
       const response = await axiosInstance.get(`/orders/${data}`);
-      return response
+      return response.data;
     } catch (e) {
       if (request.isAxiosError(e) && e.response) {
         throw new Error(e.response.data.message)

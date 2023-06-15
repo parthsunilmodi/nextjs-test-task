@@ -8,17 +8,19 @@ import {
   faBars,
   faUser
 } from '@fortawesome/free-solid-svg-icons';
-import {useAppDispatch, useAppSelector} from "../../../redux/hooks";
-import { logOutUser } from "../../../redux/slice/users/usersApi";
+import { useAppDispatch, useAppSelector } from '../../../redux/hooks';
+import { logOutUser } from '../../../redux/slice/users/usersApi';
+import './navbar.css';
 
 const NavBar = () => {
   const { user } = useAppSelector((state) => state.user);
+  const { cart } = useAppSelector((state) => state.product);
   const dispatch = useAppDispatch();
-  
+
   const handleLogOut = () => {
-    dispatch(logOutUser())
+    dispatch(logOutUser());
   };
-  
+
   return (
     <>
       <header className="lg:px-16 px-8 flex flex-wrap items-center py-2 bg-[#3b5998] w-[100%] z-10 fixed">
@@ -35,10 +37,27 @@ const NavBar = () => {
             className="h-[30px] w-[30px] text-white"
           />
         </label>
-        <input className="hidden" type="checkbox" id="menu-toggle"/>
+        <input className="hidden" type="checkbox" id="menu-toggle" />
         <div className="hidden md:flex md:items-center md:w-auto w-full" id="menu">
           <nav>
-            <ul className="md:flex items-center justify-between text-base text-gray-700 pt-4 md:pt-0">
+            <ul className="md:flex items-center justify-between text-base text-gray-700 pt-4 md:pt-0 header-controls">
+              <li className="relative">
+                <Link className="md:p-4 py-3 px-0 flex items-center" href="/cart">
+                  <FontAwesomeIcon
+                    className="mr-2 w-[20px] h-[30px]"
+                    icon={faShoppingCart}
+                    color="white"
+                    size="lg"
+                  />
+                  {
+                    !!cart.length && (
+                      <span className="point-badge">
+                        {cart.length}
+                      </span>
+                    )
+                  }
+                </Link>
+              </li>
               <li>
                 <Link className="md:p-4 py-3 px-0 flex items-center" href="/order">
                   <FontAwesomeIcon
@@ -47,34 +66,23 @@ const NavBar = () => {
                     color="white"
                     size="lg"
                   />
-                  <span className="inline md:flex justify-center items-center text-xl font-semibold text-white">
+                  <span className="inline md:flex justify-center items-center text-xl text-white text-xs">
                     My Order
                   </span>
                 </Link>
               </li>
               <li>
-                <Link className="md:p-4 py-3 px-0 flex items-center" href="/cart">
+                <Link className="md:p-4 py-3 px-0 flex items-center" href="/order">
                   <FontAwesomeIcon
                     className="mr-2 w-[20px] h-[30px]"
-                    icon={faShoppingCart}
+                    icon={faUser}
                     color="white"
                     size="lg"
                   />
-                  <span className="inline md:flex justify-center items-center text-xl font-semibold text-white">
-                    Cart
+                  <span className="inline md:flex justify-center items-center text-xl text-white text-xs">
+                    Points: {user.points}
                   </span>
                 </Link>
-              </li>
-              <li>
-                <FontAwesomeIcon
-                  className="mr-2 w-[20px] h-[30px]"
-                  icon={faUser}
-                  color="white"
-                  size="lg"
-                />
-                <span className="absolute bg-[#FF0000] ml-3 mb-7 top-3 rounded-full p-1 w-7 inline md:flex justify-center items-center text-sm font-semibold text-white">
-                  {user.points || '0'}
-                 </span>
               </li>
               <li>
                 <Link className="md:p-4 py-3 px-0 flex items-center" href="/login" onClick={handleLogOut}>
@@ -84,9 +92,6 @@ const NavBar = () => {
                     color="white"
                     size="lg"
                   />
-                  <span className="inline md:flex justify-center items-center text-xl font-semibold text-white">
-                    Log Out
-                  </span>
                 </Link>
               </li>
             </ul>
@@ -94,7 +99,7 @@ const NavBar = () => {
         </div>
       </header>
     </>
-  )
+  );
 };
 
 export default NavBar;
