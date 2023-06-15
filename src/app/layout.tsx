@@ -10,15 +10,18 @@ export const metadata = {
   description: 'Bookify store app',
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({children}: {children: React.ReactNode}) {
   return (
     <html lang="en">
-      <body className="bg-[#dfe3ee]">
-        <Providers>
-          <Toast />
-          {children}
-        </Providers>
-      </body>
+    <head>
+      <link rel="icon" href="/book.png" sizes="any"/>
+    </head>
+    <body className="bg-[#dfe3ee]">
+    <Providers>
+      <Toast/>
+      {children}
+    </Providers>
+    </body>
     </html>
   )
 }
