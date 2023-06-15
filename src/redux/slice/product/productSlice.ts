@@ -155,10 +155,7 @@ export const productSlice = createSlice({
     });
     builder.addCase(cancelOrder.fulfilled, (state:any, action) => {
       state.loading = false;
-      const index = state.order?.findIndex((item: any) => item._id === action.payload._id);
-      if (index !== -1) {
-        state.order[index] = action.payload;
-      }
+      state.order =  state.order.filter(el => el._id !== action.payload._id);
     });
     builder.addCase(cancelOrder.rejected, (state, action) => {
       state.loading = false;
@@ -166,5 +163,6 @@ export const productSlice = createSlice({
     });
   }
 });
+
 export const { setSearchText} = productSlice.actions
 export default productSlice.reducer;
