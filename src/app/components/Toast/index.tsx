@@ -3,14 +3,14 @@ import React, { useEffect, useState } from 'react';
 import { useAppSelector, useAppDispatch } from '../../../redux/hooks';
 import { setToast } from '../../../redux/slice/toast/toastSlice';
 
+let timer: NodeJS.Timeout | null = null;
+
 const Toast = () => {
   const dispatch = useAppDispatch();
   const { visible, message, type } = useAppSelector(state => state.toast);
   const [selectedType, setSelectedType] = useState<string>('');
 
   useEffect(() => {
-    let timer: NodeJS.Timeout | null = null;
-
     if (visible) {
       timer = setTimeout(() => {
         dispatch(setToast({ visible: false, message: '', type: '' }));
@@ -30,7 +30,7 @@ const Toast = () => {
 
   const onClose = () => {
     dispatch(setToast({ visible: false, message: '', type: '' }));
-    clearTimeout(timer);
+    if (timer) clearTimeout(timer);
   };
 
   const getColor = (toastType: string) => {

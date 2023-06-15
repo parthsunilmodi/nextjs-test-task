@@ -29,14 +29,19 @@ const Cart = () => {
   const { user } = useAppSelector((state) => state.user);
   const navigate = useRouter();
   const dispatch = useAppDispatch();
-  const [ bookCart, setBookCart ] = useState<ICart[]>([]);
-  const localCartData = JSON.parse(localStorage.getItem('cart') || '[]');
-  const cartStore: ICart[] | [] = localCartData|| cart;
-  
+  const [bookCart, setBookCart] = useState<ICart[]>([]);
+  let localCartData: Object | null = null;
+
+  if (typeof window !== 'undefined') {
+    localCartData = JSON.parse(localStorage.getItem('cart') || '[]');
+  }
+
+  const cartStore: ICart[] | [] = localCartData || cart;
+
   useEffect(() => {
-      setBookCart(cartStore);
-  },[cart]);
-  
+    setBookCart(cartStore);
+  }, [cart]);
+
   const handleIncrement = (item: ICart) => {
     const data = bookCart.map((product: ICart) => {
       if (item._id === product._id) {
@@ -65,7 +70,7 @@ const Cart = () => {
     dispatch(decreaseProduct(data));
   };
 
-  
+
   const handleCheckout = async () => {
     const cartItems = bookCart.map((item: ICart) => {
       return { bookId: item._id, quantity: item.amount };
@@ -116,9 +121,11 @@ const Cart = () => {
                     <span className="text-2xl">{(item.amount * item.points)}</span>
                   </div>
                 </div>
-                <div className="flex items-center justify-evenly md:items-start md:justify-start 2xl:items-center p-2 2xl:w-[20%] gap-2 border-1 rounded-lg h-14">
+                <div
+                  className="flex items-center justify-evenly md:items-start md:justify-start 2xl:items-center p-2 2xl:w-[20%] gap-2 border-1 rounded-lg h-14">
                   <button onClick={() => handleDecrease(item)} disabled={item.amount < 2}>
-                    <FontAwesomeIcon icon={faMinus} className={`${item.amount < 2 ? `bg-[#d3d3d3]` : 'bg-[#3b5998]'} p-3 rounded text-white`} />
+                    <FontAwesomeIcon icon={faMinus}
+                                     className={`${item.amount < 2 ? `bg-[#d3d3d3]` : 'bg-[#3b5998]'} p-3 rounded text-white`} />
                   </button>
                   {item.amount}
                   <button onClick={() => handleIncrement(item)} disabled={calculateTotal(bookCart) >= user.points}>
