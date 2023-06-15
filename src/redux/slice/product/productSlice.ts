@@ -155,7 +155,10 @@ export const productSlice = createSlice({
     });
     builder.addCase(cancelOrder.fulfilled, (state:any, action) => {
       state.loading = false;
-      state.order =  state.order.filter(el => el._id !== action.payload._id);
+      const index = state.order?.findIndex((item: any) => item._id === action.payload._id);
+      if (index !== -1) {
+        state.order[index] = action.payload;
+      }
     });
     builder.addCase(cancelOrder.rejected, (state, action) => {
       state.loading = false;

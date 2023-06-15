@@ -8,6 +8,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Spinner from '../components/spinner';
 import { cancelOrder, getOrder } from '../../redux/slice/product/productApi';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
+import { badge } from './style';
 
 const Order = () => {
   const dispatch = useAppDispatch();
@@ -81,9 +82,9 @@ const Order = () => {
                   <hr />
                   <div className="text-right flex gap-5 items-center justify-end">
                     Total : <span className="text-gray-600 font-bold text-right text-2xl"> {total} </span>
-                    {!isCancel && (
+                    {isCancel ? <span style={badge}>Order Cancelled</span> : (
                       <button
-                        className="bg-[#FF0000] p-2 rounded text-white"
+                        className="bg-[#f16e00] p-2 rounded text-white"
                         onClick={() => handleCancelOrder(_id)}
                       >
                         Cancel Order
