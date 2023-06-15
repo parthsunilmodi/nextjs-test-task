@@ -1,7 +1,16 @@
-import React, { useState } from 'react';
+import React from 'react';
+import {useAppDispatch, useAppSelector} from "@/redux/hooks";
+import {setSearchText} from "@/redux/slice/product/productSlice";
 
+interface IProductList {
+  searchText:string
+}
 const FilterSection = () => {
-  const [ searchText, setSearchText ] = useState<string>('');
+  const dispatch = useAppDispatch();
+  const { searchText }: IProductList = useAppSelector((state) => state.product);
+  const handleOnSearchInputChange = ( e: React.ChangeEvent<HTMLInputElement>)=> {
+    dispatch(setSearchText( e.target.value || '' ))
+  };
 
   return (
     <>
@@ -14,7 +23,7 @@ const FilterSection = () => {
               placeholder="Search..."
               type="text"
               value={searchText}
-              onChange={(e: any) => setSearchText(e.target.value)}
+              onChange={handleOnSearchInputChange}
             />
             <button className="hidden">Submit</button>
           </form>

@@ -30,7 +30,6 @@ const Cart = () => {
   const navigate = useRouter();
   const dispatch = useAppDispatch();
 
-
   const handleIncrement = (item: ICart) => {
     const data = cart.map((product: any) => {
       if (item._id === product._id) {
@@ -82,11 +81,12 @@ const Cart = () => {
         className={'p-4 sm:p-10 w-[100%]'}
         style={{ minHeight: '150px' }}
       >
-        <Link href="/" className="flex content-center mb-8 text-indigo-800">
+        <Link href="/" className="flex content-center mb-8 text-[#3b5998]">
           <FontAwesomeIcon className="mt-2 mr-2" icon={faArrowLeft} size="lg" />
           <span className="font-bold text-2xl">Back</span>
         </Link>
-        <h1 className="text-indigo-800 text-xl 2xl:text-5xl font-bold mb-8">Shopping Cart</h1>
+        <h1 className="text-indigo-800 text-xl 2xl:text-5xl font-bold mb-8 text-[#3b5998]">Shopping Cart</h1>
+
         {cart.length === 0 ? (
           <h3 className="text-gray-500 text-lg font-bold"> NO DATA IN CART ! </h3>
         ) : (
@@ -101,7 +101,7 @@ const Cart = () => {
               >
                 <Image src={item.coverImage} height={100} width={100} alt={item.title} className="w-[100%] 2xl:w-32" />
                 <div className="p-[10px] 2xl:p-8 w-full bg-white flex flex-col justify-between leading-normal">
-                  <h1 className="text-xl 2xl:text-5xl font-bold text-indigo-800">{item.title}</h1>
+                  <h1 className="text-xl 2xl:text-5xl font-bold text-[#3b5998]">{item.title}</h1>
                   <div className="text-lg font-bold">
                     <span className="text-2xl">$ {item.points}</span> x{' '}
                     <span className="text-2xl">{item.amount}</span>

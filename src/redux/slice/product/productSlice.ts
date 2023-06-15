@@ -8,6 +8,7 @@ import {
   orderCheckout,
   removeProductFromCart
 } from './productApi';
+import {array} from "yup";
 
 interface IProduct {
   _id: string;
@@ -36,6 +37,7 @@ type ProductState = {
   cart: ICart[],
   orderSuccess: boolean,
   order: any
+  searchText: string;
 };
 
 const initialState: ProductState = {
@@ -45,20 +47,27 @@ const initialState: ProductState = {
   error: '',
   hasMore: true,
   orderSuccess: false,
-  order: []
+  order: [],
+  searchText : ''
 };
 
 export const productSlice = createSlice({
   name: 'product',
   initialState,
-  reducers: {},
+  reducers: {
+     setSearchText : (state,action)=>{
+        state.searchText = action.payload;
+     }
+  },
   extraReducers: (builder) => {
     builder.addCase(fetchProduct.pending, (state, action) => {
       state.loading = true;
     });
     builder.addCase(fetchProduct.fulfilled, (state, action) => {
+      // @ts-ignore
+      const { page , data= [] } = action.payload;
       state.loading = false;
-      state.products = action.payload;
+      state.products = data && page !== 1 ? [...state.products, ...data] : (data && page === 1) ? data :state.products;
       state.hasMore = !!action.payload
     });
     builder.addCase(fetchProduct.rejected, (state, action) => {
@@ -149,5 +158,5 @@ export const productSlice = createSlice({
     });
   }
 });
-
+export const { setSearchText} = productSlice.actions
 export default productSlice.reducer;
