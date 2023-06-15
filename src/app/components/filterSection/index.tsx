@@ -1,16 +1,23 @@
-import React from 'react';
-import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-import { setSearchText } from "@/redux/slice/product/productSlice";
+import React, { useState } from 'react';
+import { useAppDispatch, useAppSelector } from '@/redux/hooks';
+import { setSearchText } from '@/redux/slice/product/productSlice';
+import useDebounce from '../../../components/debounce/useDebounce';
 
 interface IProductList {
-  searchText:string
+  searchText: string
 }
+
 const FilterSection = () => {
   const dispatch = useAppDispatch();
-  const { searchText }: IProductList = useAppSelector((state) => state.product);
+  const [ search, setSearch ] = useState('');
 
-  const handleOnSearchInputChange = ( e: React.ChangeEvent<HTMLInputElement>)=> {
-    dispatch(setSearchText( e.target.value || '' ))
+  useDebounce(() => {
+      dispatch(setSearchText(search || ''))
+    }, [ search ], 1000
+  );
+
+  const handleOnSearchInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearch(e.target.value);
   };
 
   return (
@@ -21,7 +28,7 @@ const FilterSection = () => {
             className="border-solid border-1 border-[#3b5998] p-4 rounded-lg shadow-inner w-full h-14"
             placeholder="Search..."
             type="text"
-            value={searchText}
+            value={search || ''}
             onChange={handleOnSearchInputChange}
           />
         </div>
