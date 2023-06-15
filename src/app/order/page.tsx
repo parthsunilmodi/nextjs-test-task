@@ -12,7 +12,7 @@ import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 const Order = () => {
   const dispatch = useAppDispatch();
 
-  const { order, hasMore, loading } = useAppSelector((state) => state.product);
+  const { order, hasMore } = useAppSelector((state) => state.product);
 
   const [page, setPage] = useState(1);
   const [orders, setOrders] = useState<any[]>([]);

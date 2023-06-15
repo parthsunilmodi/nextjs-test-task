@@ -12,10 +12,20 @@ import { useAppDispatch, useAppSelector } from '../../../redux/hooks';
 import { logOutUser } from '../../../redux/slice/users/usersApi';
 import './navbar.css';
 
+interface ICart {
+  _id: string;
+  title: string;
+  writer: string;
+  tag: string;
+  coverImage: string;
+  points: number;
+  amount: number;
+}
+
 const NavBar = () => {
   const { user } = useAppSelector((state) => state.user);
   const dispatch = useAppDispatch();
-  const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+  const cart: ICart[] | [] = JSON.parse(localStorage.getItem('cart') || '[]');
 
   const handleLogOut = () => {
     dispatch(logOutUser());

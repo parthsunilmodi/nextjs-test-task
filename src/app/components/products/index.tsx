@@ -44,9 +44,7 @@ const ProductList = () => {
   },[searchText]);
 
   return (
-    <InfiniteScroll next={async () => {
-      await getBooks();
-    }} hasMore={hasMore} loader={false} dataLength={products?.length} scrollThreshold={0.80}>
+    <InfiniteScroll next={getBooks} hasMore={hasMore} loader={false} dataLength={products?.length} scrollThreshold={0.80}>
       <div className="flex w-[100%] justify-center bg-[#dfe3ee]">
         <div className="flex flex-col justify-center gap-2 mt-[68px] w-full">
           <FilterSection />

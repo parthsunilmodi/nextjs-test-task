@@ -29,8 +29,8 @@ const Cart = () => {
   const { user } = useAppSelector((state) => state.user);
   const navigate = useRouter();
   const dispatch = useAppDispatch();
-  const [bookCart, setBookCart] = useState<ICart[]>([]);
-  const  localCartData = JSON.parse(localStorage.getItem('cart') || '[]');
+  const [ bookCart, setBookCart ] = useState<ICart[]>([]);
+  const localCartData = JSON.parse(localStorage.getItem('cart') || '[]');
   const cartStore: ICart[] | [] = localCartData|| cart;
   
   useEffect(() => {
@@ -52,7 +52,7 @@ const Cart = () => {
   };
 
   const handleDecrease = (item: ICart) => {
-    const data = bookCart.map((product: any) => {
+    const data = bookCart.map((product: ICart) => {
       if (item._id === product._id) {
         return {
           ...product,
@@ -67,7 +67,7 @@ const Cart = () => {
 
   
   const handleCheckout = async () => {
-    const cartItems = bookCart.map((item: any) => {
+    const cartItems = bookCart.map((item: ICart) => {
       return { bookId: item._id, quantity: item.amount };
     });
     const response = await dispatch(orderCheckout({ books: cartItems }));
@@ -76,8 +76,8 @@ const Cart = () => {
     }
   };
 
-  const calculateTotal = (items: any) =>
-    items.reduce((acc: any, item: any) => acc + item.amount * item.points, 0);
+  const calculateTotal = (items: ICart[]) =>
+    items.reduce((acc: number, item: ICart) => acc + item.amount * item.points, 0);
 
   const handleRemoveItem = (item: ICart) => {
     dispatch(removeProductFromCart(item));

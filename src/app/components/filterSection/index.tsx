@@ -1,6 +1,6 @@
 import React from 'react';
-import {useAppDispatch, useAppSelector} from "@/redux/hooks";
-import {setSearchText} from "@/redux/slice/product/productSlice";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { setSearchText } from "@/redux/slice/product/productSlice";
 
 interface IProductList {
   searchText:string

@@ -32,7 +32,12 @@ const Toast = () => {
       case 'error':
         return '#FF0000';
       case 'success':
+        debugger
         return '#4BB543';
+      case 'info':
+        return '#0a8fff';
+      default :
+        return '#FFFFFF';
     }
   };
 
